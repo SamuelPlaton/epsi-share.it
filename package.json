@@ -1,0 +1,9 @@
+{
+  "name": "root",
+  "private": true,
+  "license": "UNLICENSED",
+  "workspaces": [
+    "packages/app-shareit",
+    "packages/api"
+  ]
+}
