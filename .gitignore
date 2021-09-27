@@ -2,5 +2,7 @@
 .idea/
 
 # ignore build packages
+package-lock.json
+node_modules/
 packages/*/node_modules/
 packages/*/package-lock.json
