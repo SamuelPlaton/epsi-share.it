@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { UserWorkspace } from './user-workspace.entity';
 
 export enum UserStatus {
   NOT_CONFIRMED = 'not-confirmed',
@@ -8,7 +9,7 @@ export enum UserStatus {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
@@ -23,15 +24,15 @@ export class User {
   @Column()
   name: string;
 
-  @Column({default: UserStatus.NOT_CONFIRMED})
+  @Column({ default: UserStatus.NOT_CONFIRMED })
   status: UserStatus;
 
-  @Column()
-  createdAt: Date;
+  @Column({ default: Date.now() })
+  createdAt?: Date;
 
   /*@OneToMany((type) => Date, (file) => file.owner)
-  files: string[];
+  files: string[];*/
 
-  @OneToMany((type) => Date, (userWorkspace) => userWorkspace.user)
-  workspaces: string[];*/
+  @OneToMany((type) => UserWorkspace, (userWorkspace) => userWorkspace.user)
+  userWorkspaces: UserWorkspace[];
 }
