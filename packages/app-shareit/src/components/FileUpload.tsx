@@ -1,50 +1,77 @@
 import './../styles/FileLoader.css'
-import { useEffect, useState} from "react";
-var CryptoJS = require("crypto-js");
+import {useState} from "react";
+import CryptoJS from 'crypto-js';
+
+function convertWordArrayToUint8Array(wordArray : any) {
+    const arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
+    const length = wordArray.hasOwnProperty("sigBytes") ? wordArray.sigBytes : arrayOfWords.length * 4;
+
+    let uInt8Array = new Uint8Array(length), index=0, word, i;
+
+    for (i=0; i<length; i++) {
+        word = arrayOfWords[i];
+        uInt8Array[index++] = word >> 24;
+        uInt8Array[index++] = (word >> 16) & 0xff;
+        uInt8Array[index++] = (word >> 8) & 0xff;
+        uInt8Array[index++] = word & 0xff;
+    }
+    return uInt8Array;
+}
+
 
 
 
 function FileUpload(){
-    const [file, setFile] = useState<File>();
-    const [encryptedData, setEncryptedData] = useState<string>();
-    const [decryptedFile, setDecryptedFile] = useState<File>();
-
+    const [fileName, setFileName] = useState("");
+    const [blob, setBlob] = useState(new Blob());
 
     const handleFile = (files : FileList | null) =>{
         if(files !== null) {
-            setFile(files[0])
-            console.log(files[0])
+           setFileName(files[0].name);
+           encryptFile(files[0]);
         }
-
-        if (file !== null){
-            encryptFile(file);
-        }
-
-       decryptFile(encryptedData);
-
     }
 
-    const encryptFile = (file: File | undefined) => {
+    const encryptFile = (file: File) => {
         // Encrypt
-        const cypherText = CryptoJS.AES.encrypt(JSON.stringify(file?.arrayBuffer()), 'my-secret-key@123').toString();
-        setEncryptedData(cypherText);
+        const reader = new FileReader();
+        reader.onload = () => {
+            const key = 'oui';
+            // @ts-ignore
+            const wordArray = CryptoJS.lib.WordArray.create(reader.result);
+            const encrypted = CryptoJS.AES.encrypt(wordArray, key).toString();
+            const blob = new Blob([encrypted]);
+        }
+        if(file)
+            reader.readAsArrayBuffer(file);
 
     }
 
-    const decryptFile = (data: string | undefined) => {
-        // Decrypt
-        const bytes = CryptoJS.AES.decrypt(data, 'my-secret-key@123');
-        const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-        console.log(decryptedData)
+    const decrypt = (aFile: File | undefined) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const key = "oui";
+
+            // @ts-ignore
+            const decrypted = CryptoJS.AES.decrypt(reader.result, key);
+            const typedArray = convertWordArrayToUint8Array(decrypted);
+            const myBlob = new Blob([typedArray]);
+            setBlob(myBlob);
+        };
+        if(aFile)
+            reader.readAsText(aFile);
+
     }
 
-    useEffect(() => {
-        console.log('data:: ' + encryptedData);
-    }, [encryptedData]);
-
-    useEffect(() => {
-        console.log('file2:: ' + decryptedFile);
-    }, [decryptedFile]);
+    const download = () => {
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(
+            new Blob([blob], { type: "application/octet-stream" })
+        );
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+    }
 
     return (
       <div className="shadow p-7 rounded-md bg-lime-100 ">
