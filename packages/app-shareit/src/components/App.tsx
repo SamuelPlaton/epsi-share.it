@@ -11,7 +11,6 @@ function App() {
       <header className="App-header">
           <Login/>
         <Register/>
-        <AppRouter />
       </header>
     </div>
   );
