@@ -38,6 +38,8 @@ function Register() {
         }
     }
 
+
+
     const inputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
         const {value, name} = event.target;
         setPassword({
@@ -107,6 +109,9 @@ function Register() {
                     </li>
                     <li>Confirmation du mot de passe : {match ? <span>Vrai</span> : <span>Faux</span>}</li>
                 </ul>
+            </div>
+            <div>
+                <label htmlFor="RGPD">En m'inscrivant, je déclare accepter les Conditions générales d'utilisation.</label>
             </div>
 
             <div className="form-group">
