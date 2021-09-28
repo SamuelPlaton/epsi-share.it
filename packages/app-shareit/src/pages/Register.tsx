@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
-import './../styles/Register.css';
-import './../models/User'
-import {getCurrentDate} from './../components/getCurrentDate'
+import '../models/User'
+import {getCurrentDate} from '../components/getCurrentDate'
 
 
 function Register() {

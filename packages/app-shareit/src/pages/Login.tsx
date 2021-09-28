@@ -1,5 +1,5 @@
 import React from 'react';
-import './../styles/Login.css';
+
 
 function Login() {
     const [email, setEmail] = React.useState("");
@@ -17,8 +17,8 @@ function Login() {
 // @ts-ignore
     return (
     <form className="form">
-        <div className="form-group">
-            <label className="label">Email : </label>
+        <div className="form-group bg-red-500">
+            <label className="label text-red-500">Email : </label>
             <input type="email" placeholder="Votre email" className="input"
                    onChange={e => setEmail(e.target.value)}
                    required/>
