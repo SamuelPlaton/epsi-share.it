@@ -4,8 +4,6 @@ import './../models/User'
 import {getCurrentDate} from './../components/getCurrentDate'
 
 
-
-
 function Register() {
     const [password, setPassword] = React.useState({
         firstPassword: '',
@@ -25,20 +23,23 @@ function Register() {
 
 
     const handleSubmit = (event: { preventDefault: () => void; }) => {
-        console.log(`
-      Name: ${name}
-      Numen: ${numen}
-      Email: ${email}
-      Password: ${password}
-      Status : activate
-      ${getCurrentDate()}
-    `);
-        alert('Votre compte a bien été créé');
-        event.preventDefault();
+        if (match && validLength && hasNumber && upperCase && lowerCase && specialChar) {
+            console.log(`
+            Name: ${name}
+            Numen: ${numen}
+            Email: ${email}
+            Password: ${password.firstPassword}
+            Created at : ${getCurrentDate()}`);
+            alert('Votre compte a bien été créé !');
+            event.preventDefault();
+        } else {
+            alert('Toutes vos informations de mot de passe ne sont pas vraies !');
+            event.preventDefault();
+        }
     }
 
     const inputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
-        const { value, name } = event.target;
+        const {value, name} = event.target;
         setPassword({
             ...password,
             [name]: value
@@ -57,61 +58,63 @@ function Register() {
 
 // @ts-ignore
     return (
-                <form className="form" onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label className="label">Nom : </label>
-                        <input placeholder="Votre nom" className="input"
-                               onChange={e => setName(e.target.value)}
-                               required/>
-                    </div>
-                    <div className="form-group">
-                        <label className="label">Email : </label>
-                        <input type="email" placeholder="Votre email" className="input" value={email}
-                               onChange={e => setEmail(e.target.value)}
-                               required />
-                    </div>
-                    <div className="form-group">
-                        <label className="label">NUMEN : </label>
-                        <input placeholder="Votre numen" type="number" className="input"
-                               onChange={e => setNumen(e.target.value)}
-                               required/>
-                    </div>
-                    <div >
-                        <label htmlFor="firstPassword">Mot de passe</label>
-                        <br />
-                        <input onChange={inputChange} name="firstPassword" placeholder="Votre mot de passe" type='password' required/>
-                        <br />
-                        <label htmlFor="secondPassword">Confirmation de votre mot de passe</label>
-                        <br />
-                        <input onChange={inputChange} name="secondPassword" type='password' placeholder="Confirmation de votre mot de passe" required/>
-                        <br />
-                        <br />
-                        <ul>
-                            <li>
-                                Longueur (8 caractères) : {validLength ? <span>Vrai</span> : <span>Faux</span>}
-                            </li>
-                            <li>
-                                Contient au moins un chiffre : {hasNumber ? <span>Vrai</span> : <span>Faux</span>}
-                            </li>
-                            <li>
-                                Contient au moins une majuscule : {upperCase ? <span>Vrai</span> : <span>Faux</span>}
-                            </li>
-                            <li>
-                                Contient au moins une minuscule : {lowerCase ? <span>Vrai</span> : <span>Faux</span>}
-                            </li>
-                            <li>Confirmation du mot de passe : {match ? <span>Vrai</span> : <span>Faux</span>}</li>
-                            <li>
-                                Contient au moins un caractère spécial : {specialChar ? <span>Vrai</span> : <span>Faux</span>}
-                            </li>
-                        </ul>
-                    </div>
+        <form className="form" onSubmit={handleSubmit}>
+            <div className="form-group">
+                <label className="label">Nom : </label>
+                <input placeholder="Votre nom" className="input"
+                       onChange={e => setName(e.target.value)}
+                       required/>
+            </div>
+            <div className="form-group">
+                <label className="label">Email : </label>
+                <input type="email" placeholder="Votre email" className="input" value={email}
+                       onChange={e => setEmail(e.target.value)}
+                       required/>
+            </div>
+            <div className="form-group">
+                <label className="label">NUMEN : </label>
+                <input placeholder="Votre numen" type="number" className="input"
+                       onChange={e => setNumen(e.target.value)}
+                       required/>
+            </div>
+            <div>
+                <label htmlFor="firstPassword">Mot de passe</label>
+                <br/>
+                <input onChange={inputChange} name="firstPassword" placeholder="Votre mot de passe" type='password'
+                       required/>
+                <br/>
+                <label htmlFor="secondPassword">Confirmation de votre mot de passe</label>
+                <br/>
+                <input onChange={inputChange} name="secondPassword" type='password'
+                       placeholder="Confirmation de votre mot de passe" required/>
+                <br/>
+                <br/>
+                <ul>
+                    <li>
+                        Longueur (au moins 8 caractères) : {validLength ? <span>Vrai</span> : <span>Faux</span>}
+                    </li>
+                    <li>
+                        Contient au moins un chiffre : {hasNumber ? <span>Vrai</span> : <span>Faux</span>}
+                    </li>
+                    <li>
+                        Contient au moins une majuscule : {upperCase ? <span>Vrai</span> : <span>Faux</span>}
+                    </li>
+                    <li>
+                        Contient au moins une minuscule : {lowerCase ? <span>Vrai</span> : <span>Faux</span>}
+                    </li>
+                    <li>
+                        Contient au moins un caractère spécial : {specialChar ? <span>Vrai</span> : <span>Faux</span>}
+                    </li>
+                    <li>Confirmation du mot de passe : {match ? <span>Vrai</span> : <span>Faux</span>}</li>
+                </ul>
+            </div>
 
-                    <div className="form-group">
-                        <button type="submit" className="button" >Inscription</button>
-                    </div>
-                </form>
-            );
-        }
+            <div className="form-group">
+                <button type="submit" className="button">Inscription</button>
+            </div>
+        </form>
+    );
+}
 
 export default Register;
 
