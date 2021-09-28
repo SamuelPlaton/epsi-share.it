@@ -1,4 +1,6 @@
 import {Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import { Data, UserWorkspace } from './index';
+
 
 export enum UserStatus {
   NOT_CONFIRMED = 'not-confirmed',
@@ -8,7 +10,7 @@ export enum UserStatus {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
@@ -23,7 +25,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column({default: UserStatus.NOT_CONFIRMED})
+  @Column({ default: UserStatus.NOT_CONFIRMED })
   status: UserStatus;
 
   @CreateDateColumn()
@@ -35,9 +37,9 @@ export class User {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  /*@OneToMany((type) => Date, (file) => file.owner)
-  files: string[];
+  @OneToMany((type) => Data, (data) => data.user)
+  data: Data[];
 
-  @OneToMany((type) => Date, (userWorkspace) => userWorkspace.user)
-  workspaces: string[];*/
+  @OneToMany((type) => UserWorkspace, (userWorkspace) => userWorkspace.user)
+  userWorkspaces: UserWorkspace[];
 }

@@ -3,12 +3,17 @@ import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {ConfigModule} from '@nestjs/config';
-import {UsersModule} from './routes';
+import {DatasModule,
+  UsersModule,
+  UsersWorkspacesModule,
+  WorkspacesModule} from './routes';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: process.env.NODE_ENV ? `env/.${process.env.NODE_ENV}.env` : 'env/.env'
+      envFilePath: process.env.NODE_ENV
+        ? `env/.${process.env.NODE_ENV}.env`
+        : 'env/.env',
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -26,9 +31,12 @@ import {UsersModule} from './routes';
       synchronize: true,
     }),
     UsersModule
+    DatasModule,
+    UsersModule,
+    UsersWorkspacesModule,
+    WorkspacesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}
