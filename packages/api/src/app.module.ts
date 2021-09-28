@@ -10,7 +10,7 @@ import {UsersModule, UsersWorkspacesModule, WorkspacesModule} from "./routes";
     ConfigModule.forRoot({
       envFilePath: process.env.NODE_ENV
         ? `env/.${process.env.NODE_ENV}.env`
-        : 'env/.dev',
+        : 'env/.env',
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
