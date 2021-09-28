@@ -11,17 +11,14 @@ export default function App() {
     return (
 
         <Router>
-
-            {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
             <Switch>
-                <Route path="/">
+                <Route exact path="/">
                     <Home/>
                 </Route>
-                <Route path="/login">
+                <Route exact path="/login">
                     <Login/>
                 </Route>
-                <Route path="/register">
+                <Route exact path="/register">
                     <Register/>
                 </Route>
             </Switch>
