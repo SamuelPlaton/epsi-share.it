@@ -5,20 +5,20 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import { Login, Register} from '../pages'
+import { Home, Login, Register } from '../pages'
 
 export default function App() {
     return (
 
         <Router>
-
-            {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
             <Switch>
-                <Route path="/login">
+                <Route exact path="/">
+                    <Home/>
+                </Route>
+                <Route exact path="/login">
                     <Login/>
                 </Route>
-                <Route path="/register">
+                <Route exact path="/register">
                     <Register/>
                 </Route>
             </Switch>
