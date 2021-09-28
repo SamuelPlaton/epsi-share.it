@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 export enum UserStatus {
   NOT_CONFIRMED = 'not-confirmed',
@@ -8,7 +8,7 @@ export enum UserStatus {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -23,7 +23,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ default: UserStatus.NOT_CONFIRMED })
+  @Column({default: UserStatus.NOT_CONFIRMED})
   status: UserStatus;
 
   @Column()
