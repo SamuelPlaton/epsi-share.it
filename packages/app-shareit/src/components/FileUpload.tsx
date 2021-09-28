@@ -1,5 +1,5 @@
 import './../styles/FileLoader.css'
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import CryptoJS from 'crypto-js';
 
 function convertWordArrayToUint8Array(wordArray : any) {
@@ -41,8 +41,6 @@ function FileUpload(){
             const wordArray = CryptoJS.lib.WordArray.create(reader.result);
             const encrypted = CryptoJS.AES.encrypt(wordArray, key).toString();
             const blob = new Blob([encrypted]);
-            const file = new File([blob], "myFile");
-
         }
         if(file)
             reader.readAsArrayBuffer(file);
@@ -59,7 +57,6 @@ function FileUpload(){
             const typedArray = convertWordArrayToUint8Array(decrypted);
             const myBlob = new Blob([typedArray]);
             setBlob(myBlob);
-            const myDecryptedFile = new File( [myBlob], "decryptedFile");
         };
         if(aFile)
             reader.readAsText(aFile);
