@@ -1,7 +1,6 @@
 import './../styles/FileLoader.css'
-import { useState} from "react";
-const CryptoJS = require('crypto');
-
+import {useEffect, useState} from "react";
+import CryptoJS from 'crypto-js';
 
 function convertWordArrayToUint8Array(wordArray : any) {
     const arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
@@ -19,60 +18,62 @@ function convertWordArrayToUint8Array(wordArray : any) {
     return uInt8Array;
 }
 
-// @ts-ignore
-function decrypt(input ) {
-    var file = input.files[0];
-    var reader = new FileReader();
-    reader.onload = () => {
-        const key = "oui";
 
-        const decrypted = CryptoJS.AES.decrypt(reader.result, key);               // Decryption: I: Base64 encoded string (OpenSSL-format) -> O: WordArray
-        const typedArray = convertWordArrayToUint8Array(decrypted);               // Convert: WordArray -> typed array
-
-        const fileDec = new Blob([typedArray]);                                   // Create blob from typed array
-
-        const a = document.createElement("a");
-        const url = window.URL.createObjectURL(fileDec);
-        const filename = file.name.substr(0, file.name.length - 4) + ".dec";
-        a.href = url;
-        a.download = filename;
-        a.click();
-        window.URL.revokeObjectURL(url);
-    };
-    reader.readAsText(file);
-}
 
 
 function FileUpload(){
-    const [selectedFile, setSelectedFile] = useState<File>();
-    const [encryptedData, setEncryptedData] = useState<string>();
-    const [encryptedFile, setEncryptedFile] = useState<File>();
-    const [decryptedFile, setDecryptedFile] = useState<File>();
-
+    const [fileName, setFileName] = useState("");
+    const [blob, setBlob] = useState(new Blob());
 
     const handleFile = (files : FileList | null) =>{
         if(files !== null) {
-            setSelectedFile(files[0]);
+           setFileName(files[0].name);
+           encryptFile(files[0]);
         }
     }
 
-    const encryptFile = () => {
+    const encryptFile = (file: File) => {
         // Encrypt
-        const file = selectedFile;
-
         const reader = new FileReader();
         reader.onload = () => {
             const key = 'oui';
+            // @ts-ignore
             const wordArray = CryptoJS.lib.WordArray.create(reader.result);
             const encrypted = CryptoJS.AES.encrypt(wordArray, key).toString();
-            setEncryptedData(encrypted);
-
-            const fileEnc = new Blob([encrypted]);
-            // Create blob from string
+            const blob = new Blob([encrypted]);
+            const file = new File([blob], "myFile");
 
         }
         if(file)
             reader.readAsArrayBuffer(file);
+
+    }
+
+    const decrypt = (aFile: File | undefined) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const key = "oui";
+
+            // @ts-ignore
+            const decrypted = CryptoJS.AES.decrypt(reader.result, key);
+            const typedArray = convertWordArrayToUint8Array(decrypted);
+            const myBlob = new Blob([typedArray]);
+            setBlob(myBlob);
+            const myDecryptedFile = new File( [myBlob], "decryptedFile");
+        };
+        if(aFile)
+            reader.readAsText(aFile);
+
+    }
+
+    const download = () => {
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(
+            new Blob([blob], { type: "application/octet-stream" })
+        );
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
     }
 
     return (
@@ -89,18 +90,7 @@ function FileUpload(){
                   </div>
               </div>
           </form>
-          <div className="mt-4">
-              <button className="px-4 py-2 rounded-md text-sm font-medium border focus:outline-none focus:ring transition text-gray-600 border-gray-600 hover:text-white hover:bg-gray-600 active:bg-gray-700 focus:ring-gray-300"
-                      onClick={() => console.log("oui")} >
-                  Decrypt
-              </button>
-          </div>
-          <div className="mt-4">
-              <button className="px-4 py-2 rounded-md text-sm font-medium border focus:outline-none focus:ring transition text-gray-600 border-gray-600 hover:text-white hover:bg-gray-600 active:bg-gray-700 focus:ring-gray-300"
-                      onClick={() => encryptFile()} >
-                  Encrypt
-              </button>
-          </div>
+
       </div>
     );
 }
