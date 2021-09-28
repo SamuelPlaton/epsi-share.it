@@ -1,4 +1,4 @@
-interface LinkAuthorisations{
+export interface LinkAuthorisations{
     id : string;
     user : string;
     link : string;

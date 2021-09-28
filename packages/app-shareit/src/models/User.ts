@@ -1,11 +1,15 @@
-import React from 'react';
-
-interface User {
-    id : number;
+export interface User {
+    id : string;
     name : string;
-    token : any;
-    numen : number;
-    email : any;
-    status : 'not_confirmed' | 'activate' | 'unactive';
-    created_at : string;
+    token : string;
+    identifier : string;
+    email : string;
+    status : UserStatus;
+    createdAt : Date;
+}
+
+export enum UserStatus {
+    NOT_CONFIRMED = 'not-confirmed',
+    ACTIVE = 'active',
+    INACTIVE = 'inactive',
 }

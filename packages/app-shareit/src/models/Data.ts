@@ -1,4 +1,4 @@
-interface Data{
+export interface Data{
     id : string;
     path : string;
     user : string;

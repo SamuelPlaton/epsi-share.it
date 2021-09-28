@@ -1,4 +1,4 @@
-interface UserWorkspace{
+export interface UserWorkspace{
     id : string;
     user : string;
     workspace : string;

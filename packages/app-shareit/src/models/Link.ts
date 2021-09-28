@@ -1,4 +1,4 @@
-interface Link{
+export interface Link{
     id : string;
     data : string;
     createdAt : string;
