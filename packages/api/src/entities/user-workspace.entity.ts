@@ -16,7 +16,7 @@ export class UserWorkspace {
   status: UserWorkspaceStatus;
 
   @Column({ default: Date.now() })
-  createdAt: Date;
+  createdAt?: Date;
 
   @ManyToOne((type) => Workspace, (workspace) => workspace.userWorkspaces)
   workspace: Workspace;

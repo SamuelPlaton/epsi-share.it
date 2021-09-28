@@ -28,7 +28,7 @@ export class User {
   status: UserStatus;
 
   @Column({ default: Date.now() })
-  createdAt: Date;
+  createdAt?: Date;
 
   /*@OneToMany((type) => Date, (file) => file.owner)
   files: string[];*/
