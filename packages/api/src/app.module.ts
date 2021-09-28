@@ -1,3 +1,4 @@
+import {UsersModule} from './routes';
 import {Module} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
@@ -18,7 +19,8 @@ import {ConfigModule} from '@nestjs/config';
       database: process.env.DATABASE_NAME,
       entities: [],
       synchronize: true,
-    })
+    }),
+     UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
