@@ -32,6 +32,13 @@
 $ npm install
 ```
 
+## Configuration
+
+Configuration is managing by passing environment variables.  
+Edit the **env/.env** file OR create an environment file attach to NODE_ENV.
+Example : NODE_ENV=**dev** will take env/.**dev**.env file
+
+
 ## Running the app
 
 ```bash
