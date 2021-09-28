@@ -3,7 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import {UsersModule, UsersWorkspacesModule, WorkspacesModule} from "./routes";
+import {
+  DatasModule,
+  UsersModule,
+  UsersWorkspacesModule,
+  WorkspacesModule,
+} from './routes';
 
 @Module({
   imports: [
@@ -26,6 +31,7 @@ import {UsersModule, UsersWorkspacesModule, WorkspacesModule} from "./routes";
       },
       synchronize: true,
     }),
+    DatasModule,
     UsersModule,
     UsersWorkspacesModule,
     WorkspacesModule,
