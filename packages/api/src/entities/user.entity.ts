@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 
 export enum UserStatus {
   NOT_CONFIRMED = 'not-confirmed',
@@ -12,7 +12,7 @@ export class User {
   id: string;
 
   @Column()
-  numen: string;
+  identifier: string;
 
   @Column()
   email: string;
@@ -26,8 +26,14 @@ export class User {
   @Column({default: UserStatus.NOT_CONFIRMED})
   status: UserStatus;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   /*@OneToMany((type) => Date, (file) => file.owner)
   files: string[];
