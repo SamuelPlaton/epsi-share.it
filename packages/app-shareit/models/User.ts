@@ -2,7 +2,7 @@ interface User {
     id : string;
     name : string;
     token : string;
-    identifiant : string;
+    identifier : string;
     email : string;
     status : UserStatus;
     createdAt : Date;
