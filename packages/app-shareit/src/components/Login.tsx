@@ -26,6 +26,7 @@ function Login() {
         <div className="form-group">
             <label className="label">Mot de passe : </label>
             <input placeholder="Votre mot de passe" className="input"
+                   type="password"
                    onChange={e => setPassword(e.target.value)}
                    required/>
         </div>
@@ -38,13 +39,3 @@ function Login() {
 }
 
 export default Login;
-
-
-/*// variables used in html
-let dateString = '1968-11-16T00:00:00'
-let newDate = new Date(dateString);
-
-// format date in typescript
-getFormatedDate(date: Date, format: string) {
-    const datePipe = new DatePipe('en-US');
-    return datePipe.transform(date, format);*/
