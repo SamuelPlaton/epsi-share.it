@@ -1,20 +1,26 @@
-import {Injectable} from '@nestjs/common';
-import {ConnectUserDto, CreateUserDto, UpdateUserDto} from './dto';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Repository, UpdateResult} from 'typeorm';
-import {User} from '../../entities';
-import {JwtService} from '@nestjs/jwt';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConfirmConnectUserDto,
+  ConnectUserDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from './dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+import { User } from '../../entities';
+import { JwtService } from '@nestjs/jwt';
+import { sendMail } from './helpers/mailHandler';
 
 const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>,
-              private readonly jwtService: JwtService) {
-  }
+  constructor(
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  find(id: string):
-    Promise<User> {
+  find(id: string): Promise<User> {
     return this.usersRepository.findOne(id);
   }
 
@@ -37,22 +43,51 @@ export class UsersService {
 
   async connect(connectUserDto: ConnectUserDto): Promise<any> {
     const user = await this.usersRepository.findOne({
-      identifier: connectUserDto.identifier
+      identifier: connectUserDto.identifier,
     });
     if (user) {
       if (await bcrypt.compare(connectUserDto.password, user.token)) {
-        const authToken = await this.jwtService.signAsync({
-          id: user.id
-        })
-        return {
-          auth: authToken
-        }
+        // setup a security, send a mail and send it to the user
+        const securityCode = Math.floor(100000 + Math.random() * 900000);
+        await sendMail(user.email, securityCode);
+        await this.usersRepository.save({
+          ...user,
+          securityCode: securityCode.toString(),
+        });
+        return true;
+      } else {
+        throw new UnauthorizedException('Wrong credentials');
       }
     }
-    throw new Error();
+    throw new UnauthorizedException('User not found');
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+  async confirmConnexion(
+    confirmConnectUserDto: ConfirmConnectUserDto,
+  ): Promise<any> {
+    const user = await this.usersRepository.findOne({
+      identifier: confirmConnectUserDto.identifier,
+      securityCode: confirmConnectUserDto.securityCode,
+    });
+    if (user) {
+      await this.usersRepository.save({
+        ...user,
+        securityCode: undefined,
+      });
+      const authToken = await this.jwtService.signAsync({
+        id: user.id,
+      });
+      return {
+        auth: authToken,
+      };
+    }
+    throw new UnauthorizedException('User not found');
+  }
+
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UpdateResult> {
     if (updateUserDto.token) {
       throw new Error('Cannot update token');
     }
