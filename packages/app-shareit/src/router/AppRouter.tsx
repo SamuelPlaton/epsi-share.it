@@ -5,7 +5,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import { Login, Register} from '../pages'
+import { Login, Register, CGU} from '../pages'
 
 export default function App() {
     return (
@@ -20,6 +20,9 @@ export default function App() {
                 </Route>
                 <Route path="/register">
                     <Register/>
+                </Route>
+                <Route exact path="/cgu">
+                    <CGU/>
                 </Route>
             </Switch>
         </Router>
