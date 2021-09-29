@@ -41,6 +41,7 @@ function Login() {
         if (result?.auth) {
             localStorage.setItem('auth', result.auth);
             setPopupOpened(false);
+            history.replace('/menu');
         }
     };
 

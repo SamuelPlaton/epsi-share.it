@@ -54,6 +54,7 @@ function Register() {
             });
             if (result?.auth) {
                 localStorage.setItem('auth', result.auth);
+                history.replace('/menu');
             }
         }
     }
