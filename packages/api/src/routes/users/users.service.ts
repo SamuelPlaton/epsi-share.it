@@ -1,17 +1,10 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {ConnectUserDto, CreateUserDto, UpdateUserDto} from './dto';
+import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nestjs/common';
+import {ConfirmConnectUserDto, ConnectUserDto, CreateUserDto, UpdateUserDto} from './dto';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository, UpdateResult} from 'typeorm';
 import {User} from '../../entities';
 import {JwtService} from '@nestjs/jwt';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import {
-  ConfirmConnectUserDto,
-  ConnectUserDto,
-  CreateUserDto,
-  UpdateUserDto,
-} from './dto';
-import { sendMail } from './helpers/mailHandler';
+import {sendMail} from './helpers/mailHandler';
 
 const bcrypt = require('bcrypt');
 
@@ -20,7 +13,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+  }
 
   find(id: string): Promise<User> {
     return this.usersRepository.findOne(id);
@@ -78,9 +72,7 @@ export class UsersService {
     throw new UnauthorizedException('User not found');
   }
 
-  async confirmConnexion(
-    confirmConnectUserDto: ConfirmConnectUserDto,
-  ): Promise<any> {
+  async confirmConnexion(confirmConnectUserDto: ConfirmConnectUserDto): Promise<any> {
     const user = await this.usersRepository.findOne({
       identifier: confirmConnectUserDto.identifier,
       securityCode: confirmConnectUserDto.securityCode,
@@ -100,10 +92,7 @@ export class UsersService {
     throw new UnauthorizedException('User not found');
   }
 
-  async update(
-    id: string,
-    updateUserDto: UpdateUserDto,
-  ): Promise<UpdateResult> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
     if (updateUserDto.token) {
       throw new Error('Cannot update token');
     }

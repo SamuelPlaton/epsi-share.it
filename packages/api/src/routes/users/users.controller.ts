@@ -1,35 +1,14 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpException,
-  Param,
-  Patch,
-  Post,
-  UnauthorizedException,
-  UseGuards
-} from '@nestjs/common';
-import {ConnectUserDto, CreateUserDto, UpdateUserDto} from './dto';
+import {Body, Controller, Get, HttpException, Param, Patch, Post, UseGuards} from '@nestjs/common';
+import {ConfirmConnectUserDto, ConnectUserDto, CreateUserDto, UpdateUserDto} from './dto';
 import {UsersService} from './users.service';
 import {UpdateResult} from 'typeorm';
 import {User} from '../../entities';
 import {AuthGuard} from '@nestjs/passport';
-  Query,
-  UnauthorizedException,
-} from '@nestjs/common';
-import {
-  ConfirmConnectUserDto,
-  ConnectUserDto,
-  CreateUserDto,
-  UpdateUserDto,
-} from './dto';
-import { UsersService } from './users.service';
-import { UpdateResult } from 'typeorm';
-import { User } from '../../entities';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) {
+  }
 
   @Get(':id')
   @UseGuards(AuthGuard('jwt'))
