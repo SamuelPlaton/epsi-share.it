@@ -9,3 +9,5 @@ packages/*/package-lock.json
 
 # ignore env files
 packages/*/.env
+
+# ignore migration files

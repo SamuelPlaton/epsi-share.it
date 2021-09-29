@@ -9,7 +9,12 @@ import {
   Query,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConnectUserDto, CreateUserDto, UpdateUserDto } from './dto';
+import {
+  ConfirmConnectUserDto,
+  ConnectUserDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from './dto';
 import { UsersService } from './users.service';
 import { UpdateResult } from 'typeorm';
 import { User } from '../../entities';
@@ -40,6 +45,13 @@ export class UsersController {
   @Post('/login')
   async connect(@Body() connectUserDto: ConnectUserDto): Promise<string> {
     return await this.usersService.connect(connectUserDto);
+  }
+
+  @Post('/confirm')
+  async confirmConnexion(
+    @Body() confirmConnectUserDto: ConfirmConnectUserDto,
+  ): Promise<string> {
+    return await this.usersService.confirmConnexion(confirmConnectUserDto);
   }
 
   @Patch(':id')

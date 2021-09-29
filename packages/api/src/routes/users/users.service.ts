@@ -32,13 +32,27 @@ export class UsersService {
     return this.usersRepository.findByIds(ids);
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<any> {
     const user = new User();
     user.identifier = createUserDto.identifier;
     user.email = createUserDto.email;
     user.name = createUserDto.name;
     user.token = bcrypt.hashSync(createUserDto.password, 10);
-    return this.usersRepository.save(user);
+    const alreadyExistUser = await this.usersRepository.findOne({
+      identifier: createUserDto.identifier,
+    });
+    if (alreadyExistUser) {
+      throw new UnauthorizedException(
+        'Account already exist for this identifier',
+      );
+    }
+    const newlyCreatedUser = await this.usersRepository.save(user);
+    const authToken = await this.jwtService.signAsync({
+      id: newlyCreatedUser.id,
+    });
+    return {
+      auth: authToken,
+    };
   }
 
   async connect(connectUserDto: ConnectUserDto): Promise<any> {
@@ -72,7 +86,7 @@ export class UsersService {
     if (user) {
       await this.usersRepository.save({
         ...user,
-        securityCode: undefined,
+        securityCode: null,
       });
       const authToken = await this.jwtService.signAsync({
         id: user.id,

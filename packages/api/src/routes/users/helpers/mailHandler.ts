@@ -5,8 +5,8 @@ export const sendMail = async (receiver: string, securityCode: number) => {
     service: 'gmail',
     port: 587,
     auth: {
-      user: 'samuelplaton0@gmail.com', // generated ethereal user
-      pass: 'SAmuel..07012000', // generated ethereal password
+      user: 'samuelplaton0@gmail.com',
+      pass: 'SAmuel..07012000',
     },
   });
   await transporter.sendMail({
