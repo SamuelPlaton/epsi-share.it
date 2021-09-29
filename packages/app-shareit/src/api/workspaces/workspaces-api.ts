@@ -9,6 +9,10 @@ const WorkspacesApi = {
     return response.data;
   }).catch(err => err),
 
+  list: () => client.get('/workspaces').then(response => {
+    return response.data;
+  }).catch(err => err),
+
   create: (workspaceCreation: WorkspaceCreation) => client.post('/workspaces/create', { ...workspaceCreation }).then((response) => {
     return response.data;
   }).catch(err => err),

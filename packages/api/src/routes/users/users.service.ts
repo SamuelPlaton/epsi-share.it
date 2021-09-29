@@ -4,7 +4,7 @@ import {InjectRepository} from '@nestjs/typeorm';
 import {Repository, UpdateResult} from 'typeorm';
 import {User} from '../../entities';
 import {JwtService} from '@nestjs/jwt';
-import {sendMail} from './helpers/mailHandler';
+import {sendMail} from '../helpers/mailHandler';
 
 const bcrypt = require('bcrypt');
 
