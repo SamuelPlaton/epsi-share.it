@@ -1,5 +1,14 @@
-import {Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
-import { Data, UserWorkspace } from './index';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
+import {Data, Workspace} from './index';
 
 
 export enum UserStatus {
@@ -10,7 +19,7 @@ export enum UserStatus {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -25,7 +34,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ default: UserStatus.NOT_CONFIRMED })
+  @Column({default: UserStatus.NOT_CONFIRMED})
   status: UserStatus;
 
   @CreateDateColumn()
@@ -40,6 +49,6 @@ export class User {
   @OneToMany((type) => Data, (data) => data.user)
   data: Data[];
 
-  @OneToMany((type) => UserWorkspace, (userWorkspace) => userWorkspace.user)
-  userWorkspaces: UserWorkspace[];
+  @ManyToMany(() => Workspace)
+  workspaces: Workspace[];
 }

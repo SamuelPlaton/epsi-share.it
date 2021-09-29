@@ -3,7 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  OneToMany,
+  OneToMany, CreateDateColumn, UpdateDateColumn, DeleteDateColumn,
 } from 'typeorm';
 import { Link, User } from './index';
 
@@ -22,6 +22,15 @@ export class Data {
 
   @Column()
   type: DataType;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @ManyToOne((type) => User, (user) => user.data)
   user: User;

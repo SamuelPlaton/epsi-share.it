@@ -1,4 +1,3 @@
-export { DatasModule } from './datas';
-export { UsersModule } from './users';
-export { UsersWorkspacesModule } from './users-workspaces';
-export { WorkspacesModule } from './workspaces';
+export {DatasModule} from './datas';
+export {UsersModule} from './users';
+export {WorkspacesModule} from './workspaces';

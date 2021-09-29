@@ -1,17 +1,40 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { UserWorkspace } from './user-workspace.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
+import {User} from './user.entity';
 
 @Entity()
 export class Workspace {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   name: string;
 
-  @OneToMany(
-    (type) => UserWorkspace,
-    (userWorkspace) => userWorkspace.workspace,
-  )
-  userWorkspaces: UserWorkspace[];
+  @Column()
+  identifier: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
+
+  @ManyToOne(() => Workspace, workspace => workspace.user)
+  user: User;
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  users: User[];
 }
