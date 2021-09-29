@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-export const sendMail = async (receiver: string, securityCode: number) => {
+export const sendMail = async (receiver: string, message: string | number) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 587,
@@ -13,6 +13,6 @@ export const sendMail = async (receiver: string, securityCode: number) => {
     from: '"Share.it" <admin@shareit.com>', // sender address
     to: receiver, // list of receivers
     subject: 'Share.it - Confirmation Code', // Subject line
-    text: `${securityCode}`, // plain text body
+    text: `${message}`, // plain text body
   });
-}
+};

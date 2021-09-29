@@ -92,7 +92,7 @@ function Register() {
             </div>
             <div className="w-full flex flex-col mt-4 mb-2">
                 <label className="label">Identifiant : </label>
-                <input placeholder="Identifiant" type="string" className="p-1"
+                <input placeholder="Identifiant" type="number" className="p-1"
                        onChange={e => setIdentifier(e.target.value)}
                        required/>
             </div>

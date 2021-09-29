@@ -1,4 +1,8 @@
 export class CreateWorkspaceDto {
   name: string;
-  identifier: string;
+}
+
+export class InviteWorkspaceDto {
+  workspaceId: string;
+  userIdentifier: string;
 }
