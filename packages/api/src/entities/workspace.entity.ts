@@ -31,10 +31,10 @@ export class Workspace {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne(() => User, user => user.id)
+  @ManyToOne(() => User, (user) => user.id)
   user: User;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, (user) => user.workspaces)
   @JoinTable()
   users: User[];
 }

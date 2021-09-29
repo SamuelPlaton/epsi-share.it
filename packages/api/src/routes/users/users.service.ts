@@ -10,10 +10,8 @@ const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User) private usersRepository: Repository<User>,
-    private readonly jwtService: JwtService,
-  ) {
+  constructor(@InjectRepository(User) private usersRepository: Repository<User>,
+              private readonly jwtService: JwtService) {
   }
 
   find(id: string): Promise<User> {
@@ -59,7 +57,9 @@ export class UsersService {
       if (await bcrypt.compare(connectUserDto.password, user.token)) {
         // setup a security, send a mail and send it to the user
         const securityCode = Math.floor(100000 + Math.random() * 900000);
-        await sendMail(user.email, securityCode);
+        await sendMail(user.email, securityCode).catch((err) => {
+          return err;
+        });
         await this.usersRepository.save({
           ...user,
           securityCode: securityCode.toString(),

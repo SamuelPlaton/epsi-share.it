@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, HttpException, Param, Post, Req, UseGuards} from '@nestjs/common';
 import {WorkspacesService} from './workspaces.service';
 import {Workspace} from 'src/entities';
 import {CreateWorkspaceDto} from './dto';
@@ -25,5 +25,13 @@ export class WorkspacesController {
   @UseGuards(AuthGuard('jwt'))
   async create(@Body() createWorkspaceDto: CreateWorkspaceDto, @Req() req: any): Promise<Workspace> {
     return await this.workspacesService.create(createWorkspaceDto, req.user);
+  }
+
+  @Get('join/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async join(@Param('id') id: string, @Req() req: any): Promise<Workspace> {
+    return await this.workspacesService.join({id: id}, req.user).catch((err) => {
+      throw new HttpException(err.message, err.status);
+    })
   }
 }

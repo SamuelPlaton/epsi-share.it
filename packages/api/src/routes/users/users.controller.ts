@@ -27,9 +27,7 @@ export class UsersController {
   }
 
   @Post('/confirm')
-  async confirmConnexion(
-    @Body() confirmConnectUserDto: ConfirmConnectUserDto,
-  ): Promise<string> {
+  async confirmConnexion(@Body() confirmConnectUserDto: ConfirmConnectUserDto): Promise<string> {
     return await this.usersService.confirmConnexion(confirmConnectUserDto);
   }
 
