@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn
+} from 'typeorm';
 import { Data } from './data.entity';
 
 export enum LinkStatus {
@@ -11,11 +19,17 @@ export class Link {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ default: Date.now() })
-  createdAt: Date;
-
   @Column({ default: LinkStatus.ACTIVE })
   status: LinkStatus;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @ManyToOne((type) => Data, (data) => data.links)
   data: Data;

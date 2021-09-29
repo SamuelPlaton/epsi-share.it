@@ -1,5 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Data, UserWorkspace } from './index';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
+import {Data, Workspace} from './index';
+
 
 export enum UserStatus {
   NOT_CONFIRMED = 'not-confirmed',
@@ -9,11 +19,11 @@ export enum UserStatus {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  numen: string;
+  identifier: string;
 
   @Column()
   email: string;
@@ -24,15 +34,21 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ default: UserStatus.NOT_CONFIRMED })
+  @Column({default: UserStatus.NOT_CONFIRMED})
   status: UserStatus;
 
-  @Column({ default: Date.now() })
-  createdAt?: Date;
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @OneToMany((type) => Data, (data) => data.user)
   data: Data[];
 
-  @OneToMany((type) => UserWorkspace, (userWorkspace) => userWorkspace.user)
-  userWorkspaces: UserWorkspace[];
+  @ManyToMany(() => Workspace)
+  workspaces: Workspace[];
 }

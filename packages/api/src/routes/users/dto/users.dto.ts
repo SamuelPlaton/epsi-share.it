@@ -1,12 +1,12 @@
 export class CreateUserDto {
   email: string;
   name: string;
-  numen: string;
+  identifier: string;
   password: string;
 }
 
 export class ConnectUserDto {
-  numen: string;
+  identifier: string;
   password: string;
 }
 
