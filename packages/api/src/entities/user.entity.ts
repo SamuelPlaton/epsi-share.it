@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Data, Workspace } from './index';
+import {Data, Workspace} from './index';
 
 export enum UserStatus {
   NOT_CONFIRMED = 'not-confirmed',
@@ -33,24 +33,24 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ default: UserStatus.NOT_CONFIRMED })
+  @Column({default: UserStatus.NOT_CONFIRMED})
   status: UserStatus;
 
-  @Column({ nullable: true })
+  @Column({nullable: true})
   securityCode?: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true })
+  @UpdateDateColumn({nullable: true})
   updatedAt: Date;
 
-  @DeleteDateColumn({ nullable: true })
+  @DeleteDateColumn({nullable: true})
   deletedAt: Date;
 
   @OneToMany(() => Data, (data) => data.id)
   data: Data[];
-  
-  @ManyToMany(() => Workspace)
+
+  @ManyToMany(() => Workspace, (workspace) => workspace.users)
   workspaces: Workspace[];
 }
