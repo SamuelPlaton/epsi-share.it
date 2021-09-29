@@ -9,7 +9,7 @@ const WorkspacesApi = {
     return response.data;
   }).catch(err => err),
 
-  list: () => client.get(`users/workspaces`).then(response => {
+  list: () => client.get('/workspaces').then(response => {
     return response.data;
   }).catch(err => err),
 
