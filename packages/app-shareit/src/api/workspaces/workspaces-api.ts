@@ -1,6 +1,6 @@
 import { client } from '../client/';
 
-interface WorkspaceCreation {
+export interface WorkspaceCreation {
   name: string;
 }
 
@@ -9,10 +9,11 @@ const WorkspacesApi = {
     return response.data;
   }).catch(err => err),
 
-  create: (workspaceCreation: WorkspaceCreation) => client.post('/workspaces/create', { workspaceCreation }).then((response) => {
+  create: (workspaceCreation: WorkspaceCreation) => client.post('/workspaces/create', { ...workspaceCreation }).then((response) => {
     return response.data;
   }).catch(err => err),
 
 }
+
 
 export default WorkspacesApi;
