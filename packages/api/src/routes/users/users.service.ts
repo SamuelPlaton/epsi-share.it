@@ -73,6 +73,7 @@ export class UsersService {
         ).toString();
         await sendMail(
           user.email,
+          'Confirmation Code',
           securityCode,
           connexionTemplate(connectUserDto.identifier, securityCode),
         ).catch((err) => {

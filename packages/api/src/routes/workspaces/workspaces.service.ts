@@ -85,6 +85,7 @@ export class WorkspacesService {
     }
     await sendMail(
       user.email,
+      'Invitation à un workspace',
       `http://localhost:3000/join/${workspace.id}`,
       invitationTemplate(workspace, user.name),
     );

@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 
 export const sendMail = async (
   receiver: string,
+  title: string,
   message: string | number,
   html?: string,
 ) => {
@@ -18,7 +19,7 @@ export const sendMail = async (
     .sendMail({
       from: '"Share.it" <admin@shareit.com>', // sender address
       to: receiver, // list of receivers
-      subject: 'Share.it - Confirmation Code', // Subject line
+      subject: `Share.it - ${title}`, // Subject line
       text: `${message}`, // plain text body,
       html: html,
     })
