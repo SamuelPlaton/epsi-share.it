@@ -4,7 +4,6 @@ import IdentifierInput from "../components/inputs/identifier-input/IdentifierInp
 import {Api} from "../api";
 
 import { default as Popup } from '../components/Popup';
-import {AsyncLocalStorage} from "async_hooks";
 
 function Login() {
     const [identifier, setIdentifier] = useState<Array<number>>([]);
@@ -66,7 +65,7 @@ function Login() {
               </div>
           </form>
           {isPopupOpened && (
-            <Popup>
+            <Popup onClose={() => setPopupOpened(false)}>
                 <div className='p-2'>
                     <form
                       onSubmit={confirmConnexion}
