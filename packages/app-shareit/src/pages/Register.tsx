@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import '../models/User'
-import {getCurrentDate} from '../components/getCurrentDate'
 import NavigationLayout from "../components/NavigationLayout";
 import {Api} from "../api";
 
@@ -57,6 +56,7 @@ function Register() {
         if(wrongPassword) {
             setWrongPassword(undefined);
         }
+        // eslint-disable-next-line
     }, [password]);
 
     const inputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
