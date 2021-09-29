@@ -3,10 +3,7 @@ import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {ConfigModule} from '@nestjs/config';
-import {DatasModule,
-  UsersModule,
-  UsersWorkspacesModule,
-  WorkspacesModule} from './routes';
+import {DatasModule, UsersModule, WorkspacesModule} from './routes';
 
 @Module({
   imports: [
@@ -30,13 +27,13 @@ import {DatasModule,
       },
       synchronize: true,
     }),
-    UsersModule
+    UsersModule,
     DatasModule,
     UsersModule,
-    UsersWorkspacesModule,
     WorkspacesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+}
