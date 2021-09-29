@@ -7,8 +7,6 @@ const CreateWorkspace = () => {
     const [newWorkspaceName, setNewWorkSpaceName] = useState<string>("");
 
     const handleSubmit = (event: { preventDefault: () => void; }) => {
-        console.log(`Name: ${newWorkspaceName}`);
-
         WorkspacesApi.create({
             name: newWorkspaceName
         });
