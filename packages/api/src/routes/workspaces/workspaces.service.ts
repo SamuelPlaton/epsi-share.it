@@ -1,25 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Workspace } from 'src/entities';
-import { Repository } from 'typeorm';
-import { CreateWorkspaceDto } from './dto';
+import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {User, Workspace} from 'src/entities';
+import {Repository} from 'typeorm';
+import {CreateWorkspaceDto} from './dto';
 
 @Injectable()
 export class WorkspacesService {
-  constructor(
-    @InjectRepository(Workspace)
-    private workspacesRepository: Repository<Workspace>,
-  ) {}
+  constructor(@InjectRepository(Workspace) private workspacesRepository: Repository<Workspace>) {
+  }
 
-  find(id: string): Promise<Workspace> {
+  async find(id: string): Promise<Workspace> {
     return this.workspacesRepository.findOne(id);
   }
 
-  list(ids: string[]): Promise<Workspace[]> {
-    return this.workspacesRepository.findByIds(ids);
+  async getAll(user: User): Promise<Workspace[]> {
+    return this.workspacesRepository.find({user: user});
   }
 
-  create(createWorkspaceDto: CreateWorkspaceDto): Workspace {
-    return this.workspacesRepository.create(createWorkspaceDto);
+  async create(createWorkspaceDto: CreateWorkspaceDto, user: User): Promise<Workspace> {
+    const workspace = new Workspace();
+    workspace.name = createWorkspaceDto.name;
+    workspace.identifier = createWorkspaceDto.identifier;
+    workspace.user = user;
+    return this.workspacesRepository.save(workspace);
   }
 }

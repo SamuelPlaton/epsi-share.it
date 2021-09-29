@@ -1,11 +1,14 @@
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
   ManyToOne,
-  OneToMany, CreateDateColumn, UpdateDateColumn, DeleteDateColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { Link, User } from './index';
+import {Link, User} from './index';
 
 export enum DataType {
   FILE = 'file',
@@ -18,10 +21,10 @@ export class Data {
   id: string;
 
   @Column()
-  path: string;
+  type: DataType;
 
   @Column()
-  type: DataType;
+  code: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -32,9 +35,9 @@ export class Data {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne((type) => User, (user) => user.data)
+  @ManyToOne(() => User, (user) => user.id)
   user: User;
 
-  @OneToMany((type) => Link, (link) => link.data)
+  @OneToMany(() => Link, (link) => link.id)
   links: Link[];
 }

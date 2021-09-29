@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {ConnectUserDto, CreateUserDto, UpdateUserDto} from './dto';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository, UpdateResult} from 'typeorm';
@@ -13,8 +13,7 @@ export class UsersService {
               private readonly jwtService: JwtService) {
   }
 
-  find(id: string):
-    Promise<User> {
+  find(id: string): Promise<User> {
     return this.usersRepository.findOne(id);
   }
 
@@ -41,9 +40,9 @@ export class UsersService {
     });
     if (user) {
       if (await bcrypt.compare(connectUserDto.password, user.token)) {
-        const authToken = await this.jwtService.signAsync({
+        const authToken = this.jwtService.sign({
           id: user.id
-        })
+        });
         return {
           auth: authToken
         }
@@ -61,5 +60,12 @@ export class UsersService {
       delete updateUserDto.password;
     }
     return await this.usersRepository.update(id, updateUserDto);
+  }
+
+  async findByPayload(payload: any): Promise<User> {
+    if (!payload) {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
+    return await this.usersRepository.findOne({id: payload.id});
   }
 }

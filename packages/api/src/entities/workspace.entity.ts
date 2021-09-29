@@ -31,7 +31,7 @@ export class Workspace {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne(() => Workspace, workspace => workspace.user)
+  @ManyToOne(() => User, user => user.id)
   user: User;
 
   @ManyToMany(() => User)
