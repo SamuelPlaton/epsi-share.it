@@ -5,7 +5,8 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import { Home, Login, Register } from '../pages'
+
+import { Home, Login, Register, CGU } from '../pages'
 
 export default function App() {
     return (
@@ -20,6 +21,9 @@ export default function App() {
                 </Route>
                 <Route exact path="/register">
                     <Register/>
+                </Route>
+                <Route exact path="/cgu">
+                    <CGU/>
                 </Route>
             </Switch>
         </Router>
