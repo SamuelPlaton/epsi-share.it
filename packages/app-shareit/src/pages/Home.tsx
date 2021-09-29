@@ -3,6 +3,10 @@ import { useHistory } from "react-router-dom";
 
 const Home: FunctionComponent = () => {
   const history = useHistory();
+  const isUserActive = localStorage.getItem('auth');
+  if (isUserActive) {
+    history.replace('/menu')
+  }
   return (
     <div className='flex flex-col justify-center items-center w-full h-screen py-4 bg-gray-100'>
       <div className='h-1/3 my-8 flex items-center'>

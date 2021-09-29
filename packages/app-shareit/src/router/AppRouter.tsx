@@ -5,7 +5,7 @@ import {
     Route,
 } from "react-router-dom";
 
-import { Home, Login, Register, CGU } from '../pages'
+import {Home, Login, Register, CGU, Menu} from '../pages'
 
 export default function App() {
     return (
@@ -23,6 +23,9 @@ export default function App() {
                 </Route>
                 <Route exact path="/cgu">
                     <CGU/>
+                </Route>
+                <Route exact path="/menu">
+                    <Menu/>
                 </Route>
             </Switch>
         </Router>

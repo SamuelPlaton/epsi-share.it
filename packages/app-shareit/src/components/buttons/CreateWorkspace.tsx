@@ -15,7 +15,7 @@ const CreateWorkspace = () => {
 
     return (
         <div>
-            <button type="button" onClick={() => setIsPopupOpen(true)}>
+            <button type="button" className="border-4 shadow-md rounded-md border-blue-500 p-4 bg-white" onClick={() => setIsPopupOpen(true)}>
                 <p>Créer un dossier partagé</p>
             </button>
             {isPopupOpen &&
@@ -31,7 +31,7 @@ const CreateWorkspace = () => {
                                  <button type="submit"
                                          className="bg-blue-500 p-2 rounded-md shadow-md text-white"
                                          onClick={handleSubmit}
-                                 >Créer</button>
+                                 >Valider</button>
                              </div>
                          </form>
                     </div>

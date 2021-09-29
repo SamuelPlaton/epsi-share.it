@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import '../models/User'
 import NavigationLayout from "../components/NavigationLayout";
 import {Api} from "../api";
+import {useHistory} from "react-router-dom";
 
 const checkPassword = (firstPassword: string, secondPassword: string): string|undefined => {
     if (firstPassword.length === 0) {
@@ -34,6 +35,11 @@ function Register() {
 
     const [wrongPassword, setWrongPassword] = useState<string|undefined>();
 
+    const isUserActive = localStorage.getItem('auth');
+    const history = useHistory();
+    if (isUserActive) {
+        history.replace('/menu');
+    }
 
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
