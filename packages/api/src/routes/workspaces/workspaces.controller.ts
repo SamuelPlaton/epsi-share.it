@@ -11,7 +11,7 @@ import { WorkspacesService } from './workspaces.service';
 import { Workspace } from 'src/entities';
 import { CreateWorkspaceDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
-import { InviteWorkspaceDto } from './dto/workspaces.dto';
+import { InviteWorkspaceDto, JoinWorkspaceDto } from './dto/workspaces.dto';
 
 @Controller('workspaces')
 export class WorkspacesController {
@@ -37,10 +37,20 @@ export class WorkspacesController {
   ): Promise<Workspace> {
     return await this.workspacesService.create(createWorkspaceDto, req.user);
   }
+
   @Post('/invite')
   async invite(
     @Body() inviteWorkspaceDto: InviteWorkspaceDto,
   ): Promise<boolean> {
     return await this.workspacesService.invite(inviteWorkspaceDto);
+  }
+
+  @Post('/join')
+  @UseGuards(AuthGuard('jwt'))
+  async join(
+    @Body() joinWorkspaceDto: JoinWorkspaceDto,
+    @Req() req: any,
+  ): Promise<Workspace> {
+    return this.workspacesService.join(joinWorkspaceDto, req.user);
   }
 }

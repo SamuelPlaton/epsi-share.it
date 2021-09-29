@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, Workspace } from 'src/entities';
 import { Repository } from 'typeorm';
 import { CreateWorkspaceDto } from './dto';
-import { InviteWorkspaceDto } from './dto/workspaces.dto';
+import {InviteWorkspaceDto, JoinWorkspaceDto} from './dto/workspaces.dto';
 import { sendMail } from '../helpers/mailHandler';
 
 @Injectable()
@@ -59,5 +63,27 @@ export class WorkspacesService {
     }
     await sendMail(user.email, `http://localhost:3000/join/${workspace.id}`);
     return true;
+  }
+
+  async join(
+    joinWorkspaceDto: JoinWorkspaceDto,
+    user: User,
+  ): Promise<Workspace> {
+    const workspace = await this.workspacesRepository.findOne(
+      joinWorkspaceDto.workspaceId,
+    );
+    if (!workspace) {
+      throw new NotFoundException('Workspace not found');
+    }
+
+    if (workspace.users.find((workspaceUser) => workspaceUser.id === user.id)) {
+      throw new UnauthorizedException('User already in the workspace');
+    }
+    const updatedUsers = workspace.users;
+    updatedUsers.push(user);
+    return this.workspacesRepository.save({
+      ...workspace,
+      users: updatedUsers,
+    });
   }
 }

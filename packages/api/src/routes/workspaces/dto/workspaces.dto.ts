@@ -6,3 +6,7 @@ export class InviteWorkspaceDto {
   workspaceId: string;
   userIdentifier: string;
 }
+
+export class JoinWorkspaceDto {
+  workspaceId: string;
+}
