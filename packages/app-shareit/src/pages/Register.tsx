@@ -5,9 +5,6 @@ import NavigationLayout from "../components/NavigationLayout";
 import {Api} from "../api";
 
 const checkPassword = (firstPassword: string, secondPassword: string): string|undefined => {
-    console.log('send');
-    console.log(firstPassword);
-    console.log(secondPassword);
     if (firstPassword.length === 0) {
         return undefined;
     } else if (firstPassword.length < 8 && firstPassword.length !== 0) {
