@@ -14,11 +14,22 @@ import {UsersService} from './users.service';
 import {UpdateResult} from 'typeorm';
 import {User} from '../../entities';
 import {AuthGuard} from '@nestjs/passport';
+  Query,
+  UnauthorizedException,
+} from '@nestjs/common';
+import {
+  ConfirmConnectUserDto,
+  ConnectUserDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from './dto';
+import { UsersService } from './users.service';
+import { UpdateResult } from 'typeorm';
+import { User } from '../../entities';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {
-  }
+  constructor(private usersService: UsersService) {}
 
   @Get(':id')
   @UseGuards(AuthGuard('jwt'))
@@ -33,11 +44,14 @@ export class UsersController {
 
   @Post('/login')
   async connect(@Body() connectUserDto: ConnectUserDto): Promise<string> {
-    return await this.usersService
-      .connect(connectUserDto)
-      .catch(() => {
-        throw new UnauthorizedException('Wrong credentials');
-      });
+    return await this.usersService.connect(connectUserDto);
+  }
+
+  @Post('/confirm')
+  async confirmConnexion(
+    @Body() confirmConnectUserDto: ConfirmConnectUserDto,
+  ): Promise<string> {
+    return await this.usersService.confirmConnexion(confirmConnectUserDto);
   }
 
   @Patch(':id')

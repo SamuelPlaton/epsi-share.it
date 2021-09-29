@@ -21,6 +21,7 @@ const IdentifierInput: FunctionComponent<Props> = ({ onClick, onReset }) => {
         <button
           className="bg-white border border-2 border-gray-400 h-16 w-16 text-lg m-2 shadow-md"
           onClick={() => onClick(number)}
+          key={number}
           type="button"
         >
           {number.toString()}

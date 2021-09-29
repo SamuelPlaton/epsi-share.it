@@ -10,6 +10,11 @@ export class ConnectUserDto {
   password: string;
 }
 
+export class ConfirmConnectUserDto {
+  identifier: string;
+  securityCode: string;
+}
+
 export enum UpdateUserAction {
   CHANGE_PASSWORD = 'change-password',
   UPDATE = 'update',
