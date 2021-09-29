@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import { Home, Login, Register, CGU } from '../pages'
+
 export default function App() {
     return (
         <Router>
