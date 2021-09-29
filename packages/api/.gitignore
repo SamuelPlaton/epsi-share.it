@@ -11,15 +11,18 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# migrations
+src/migration/
+
+# env files
+env/.env
+
 # OS
 .DS_Store
 
 # Tests
 /coverage
 /.nyc_output
-
-# migrations
-migrations/
 
 # IDEs and editors
 /.idea
@@ -36,4 +39,7 @@ migrations/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-/env/.dev.env
+
+# env files
+env/.env
+/env/.*.env

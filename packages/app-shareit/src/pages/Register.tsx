@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import '../models/User'
 import {getCurrentDate} from '../components/getCurrentDate'
 import NavigationLayout from "../components/NavigationLayout";
+import {Api} from "../api";
 
 const checkPassword = (firstPassword: string, secondPassword: string): string|undefined => {
     if (firstPassword.length === 0) {
@@ -12,7 +13,7 @@ const checkPassword = (firstPassword: string, secondPassword: string): string|un
         return `Votre mot de passe doit contenir des majuscules`;
     }  else if (firstPassword.toUpperCase() === firstPassword) {
         return `Votre mot de passe doit contenir des minuscules`;
-    } else if (!!firstPassword && firstPassword === secondPassword) {
+    } else if (firstPassword.length > 0 && firstPassword !== secondPassword) {
         return `Vos mots de passe ne correspondent pas`;
     } else if (!/\d/.test(firstPassword)) {
         return `Votre mot de passe doit contenir des chiffres`;
@@ -35,20 +36,20 @@ function Register() {
     const [wrongPassword, setWrongPassword] = useState<string|undefined>();
 
 
-    const handleSubmit = (event: { preventDefault: () => void; }) => {
-        const errorMessage = checkPassword(password.firstPassword, password.secondPassword)
+    const handleSubmit = async (event: { preventDefault: () => void; }) => {
+        event.preventDefault();
+        const errorMessage = checkPassword(password.firstPassword, password.secondPassword);
         setWrongPassword(errorMessage);
         if (!errorMessage) {
-            console.log(`
-            Name: ${name}
-            Identifier: ${identifier}
-            Email: ${email}
-            Password: ${password.firstPassword}
-            Created at : ${getCurrentDate()}`);
-            alert('Votre compte a bien été créé !');
-            event.preventDefault();
-        } else {
-            event.preventDefault();
+            const result = await Api.UsersApi.create({
+                name: name,
+                identifier: identifier,
+                password: password.firstPassword,
+                email: email
+            });
+            if (result?.auth) {
+                localStorage.setItem('auth', result.auth);
+            }
         }
     }
 
@@ -72,30 +73,36 @@ function Register() {
         <form className="flex flex-col items-center w-64 mx-auto text-sm" onSubmit={handleSubmit}>
             <div className="w-full flex flex-col mt-4 mb-2">
                 <label className="label">Nom : </label>
-                <input placeholder="Votre nom" className="input"
+                <input placeholder="Votre nom" className="p-1"
                        onChange={e => setName(e.target.value)}
                        required/>
             </div>
             <div className="w-full flex flex-col mt-4 mb-2">
                 <label className="label">Email : </label>
-                <input type="email" placeholder="Votre email" className="input" value={email}
+                <input type="email" placeholder="Votre email" className="p-1" value={email}
                        onChange={e => setEmail(e.target.value)}
                        required/>
             </div>
             <div className="w-full flex flex-col mt-4 mb-2">
                 <label className="label">Identifiant : </label>
-                <input placeholder="Identifiant" type="string" className="input"
+                <input placeholder="Identifiant" type="string" className="p-1"
                        onChange={e => setIdentifier(e.target.value)}
                        required/>
             </div>
             <div className="w-full flex flex-col mt-4 mb-2">
                 <label htmlFor="firstPassword">Mot de passe :</label>
-                <input onChange={inputChange} name="firstPassword" placeholder="Votre mot de passe" type='password'
+                <input
+                  className="p-1"
+                  onChange={inputChange} name="firstPassword" placeholder="Votre mot de passe" type='password'
                        required/>
             </div>
-            <div className="w-full flex flex-col mt-4 mb-2">
+            <div
+              className="w-full flex flex-col mt-4 mb-2">
                 <label htmlFor="secondPassword">Confirmation de votre mot de passe :</label>
-                <input onChange={inputChange} name="secondPassword" type='password' required/>
+                <input
+                  className="p-1"
+                  placeholder="Confirmation du mot de passe"
+                  onChange={inputChange} name="secondPassword" type='password' required/>
                 {wrongPassword && <p className='text-xs text-red-500'>{wrongPassword}</p>}
             </div>
             <button type="submit" className="bg-blue-500 p-4 rounded-md shadow-md text-lg text-white my-4">Inscription</button>
