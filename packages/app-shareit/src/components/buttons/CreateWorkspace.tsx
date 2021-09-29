@@ -1,16 +1,25 @@
-import React, {useState} from "react";
+import React, {FunctionComponent, useState} from "react";
 import Popup from "../Popup";
 import WorkspacesApi from "../../api/workspaces/workspaces-api";
+import {Workspace} from "../../models";
 
-const CreateWorkspace = () => {
+interface Props {
+    onSubmit: (_: Workspace) => void;
+}
+const CreateWorkspace: FunctionComponent<Props> = ({ onSubmit }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [newWorkspaceName, setNewWorkSpaceName] = useState<string>("");
 
-    const handleSubmit = (event: { preventDefault: () => void; }) => {
-        WorkspacesApi.create({
+    const handleSubmit = async (event: { preventDefault: () => void; }) => {
+        event.preventDefault();
+        const workspace = await WorkspacesApi.create({
             name: newWorkspaceName
         });
-        event.preventDefault();
+        if (workspace?.id) {
+            onSubmit(workspace);
+            setIsPopupOpen(false);
+        }
+
     }
 
     return (
