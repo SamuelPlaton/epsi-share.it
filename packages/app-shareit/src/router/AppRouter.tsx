@@ -9,7 +9,6 @@ import { Home, Login, Register, CGU } from '../pages'
 
 export default function App() {
     return (
-
         <Router>
             <Switch>
                 <Route exact path="/">
