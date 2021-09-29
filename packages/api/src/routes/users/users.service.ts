@@ -1,18 +1,30 @@
-import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nestjs/common';
-import {ConfirmConnectUserDto, ConnectUserDto, CreateUserDto, UpdateUserDto} from './dto';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Repository, UpdateResult} from 'typeorm';
-import {User} from '../../entities';
-import {JwtService} from '@nestjs/jwt';
-import {sendMail} from '../helpers/mailHandler';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import {
+  ConfirmConnectUserDto,
+  ConnectUserDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from './dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+import { User } from '../../entities';
+import { JwtService } from '@nestjs/jwt';
+import { sendMail } from '../helpers/mailHandler';
+import { connexionTemplate } from '../helpers/connexionTemplate';
 
 const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>,
-              private readonly jwtService: JwtService) {
-  }
+  constructor(
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    private readonly jwtService: JwtService,
+  ) {}
 
   find(id: string): Promise<User> {
     return this.usersRepository.findOne(id);
@@ -56,13 +68,19 @@ export class UsersService {
     if (user) {
       if (await bcrypt.compare(connectUserDto.password, user.token)) {
         // setup a security, send a mail and send it to the user
-        const securityCode = Math.floor(100000 + Math.random() * 900000);
-        await sendMail(user.email, securityCode).catch((err) => {
+        const securityCode = Math.floor(
+          100000 + Math.random() * 900000,
+        ).toString();
+        await sendMail(
+          user.email,
+          securityCode,
+          connexionTemplate(connectUserDto.identifier, securityCode),
+        ).catch((err) => {
           return err;
         });
         await this.usersRepository.save({
           ...user,
-          securityCode: securityCode.toString(),
+          securityCode: securityCode,
         });
         return true;
       } else {
@@ -72,7 +90,9 @@ export class UsersService {
     throw new UnauthorizedException('User not found');
   }
 
-  async confirmConnexion(confirmConnectUserDto: ConfirmConnectUserDto): Promise<any> {
+  async confirmConnexion(
+    confirmConnectUserDto: ConfirmConnectUserDto,
+  ): Promise<any> {
     const user = await this.usersRepository.findOne({
       identifier: confirmConnectUserDto.identifier,
       securityCode: confirmConnectUserDto.securityCode,
@@ -92,7 +112,10 @@ export class UsersService {
     throw new UnauthorizedException('User not found');
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UpdateResult> {
     if (updateUserDto.token) {
       throw new Error('Cannot update token');
     }
@@ -107,6 +130,6 @@ export class UsersService {
     if (!payload) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
-    return await this.usersRepository.findOne({id: payload.id});
+    return await this.usersRepository.findOne({ id: payload.id });
   }
 }
