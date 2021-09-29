@@ -4,12 +4,19 @@ import IdentifierInput from "../components/inputs/identifier-input/IdentifierInp
 import {Api} from "../api";
 
 import { default as Popup } from '../components/Popup';
+import {useHistory} from "react-router-dom";
 
 function Login() {
     const [identifier, setIdentifier] = useState<Array<number>>([]);
     const [password, setPassword] = useState<string>("");
     const [securityCode, setSecurityCode] = useState<string>("");
     const [isPopupOpened, setPopupOpened] = useState<boolean>(false);
+
+    const isUserActive = localStorage.getItem('auth');
+    const history = useHistory();
+    if (isUserActive) {
+        history.replace('/menu')
+    }
 
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
@@ -73,6 +80,7 @@ function Login() {
                     >
                     <p className="my-2">Entrez votre code reçu par mail :</p>
                     <input placeholder="Code de sécurité"
+                           className="p-1"
                            type="string"
                            onChange={e => setSecurityCode(e.target.value)}
                            required/>
