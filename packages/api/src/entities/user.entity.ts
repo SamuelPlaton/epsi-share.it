@@ -48,9 +48,9 @@ export class User {
   @DeleteDateColumn({ nullable: true })
   deletedAt: Date;
 
-  /*@OneToMany((type) => Data, (data) => data.user)
+  @OneToMany(() => Data, (data) => data.id)
   data: Data[];
   
-  @OneToMany((type) => UserWorkspace, (userWorkspace) => userWorkspace.user)
-  userWorkspaces: UserWorkspace[];*/
+  @ManyToMany(() => Workspace)
+  workspaces: Workspace[];
 }

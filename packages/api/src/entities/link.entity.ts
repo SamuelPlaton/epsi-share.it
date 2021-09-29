@@ -31,6 +31,6 @@ export class Link {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne((type) => Data, (data) => data.links)
+  @ManyToOne(() => Data, (data) => data.id)
   data: Data;
 }
