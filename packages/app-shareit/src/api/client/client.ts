@@ -8,7 +8,7 @@ const client = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin' : '*',
-    Authorization: author
+    Authorization: `Bearer ${author}`
   },
 });
 

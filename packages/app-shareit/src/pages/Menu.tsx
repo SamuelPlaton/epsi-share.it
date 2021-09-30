@@ -1,8 +1,10 @@
-import {FunctionComponent, useEffect} from "react";
+import {FunctionComponent, useEffect, useState} from "react";
 import { useHistory } from "react-router-dom";
 import NavigationLayout from "../components/NavigationLayout";
 import CreateWorkspace from "../components/buttons/CreateWorkspace";
 import {Api} from "../api";
+import WorkspacesList from "../components/list/workspaces-list/WorkspacesList";
+import {Workspace} from "../models";
 
 const Menu: FunctionComponent = () => {
 
@@ -11,22 +13,49 @@ const Menu: FunctionComponent = () => {
   if (!isUserActive) {
     history.replace('/');
   }
-
   const getWorkspaces = async () => {
-    return await Api.WorkspacesApi.list();
+    const tempWorkspaces = await Api.WorkspacesApi.list();
+    if (tempWorkspaces.length > 0) {
+      setWorkspaces(tempWorkspaces);
+    }
   }
 
-  const workspaces = getWorkspaces();
-  console.log('workspaces : ', workspaces)
+  useEffect(() => {
+    getWorkspaces();
+  }, []);
 
+  const [activeWorkspace, setActiveWorkspace] = useState<Workspace|undefined>();
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+
+  const handleAddWorkspace = (workspace: Workspace) => {
+    setWorkspaces(workspaces.concat(workspace));
+    setActiveWorkspace(workspace)
+  }
   return (
     <NavigationLayout title="Menu">
       <div className="flex flex-row min-h-screen">
         <div className="border-2 border-gray-300 m-4 p-4">
-          <CreateWorkspace/>
+          <CreateWorkspace onSubmit={handleAddWorkspace}/>
+          <WorkspacesList
+            activeWorkspace={activeWorkspace}
+            onClick={(workspace) => setActiveWorkspace(workspace)}
+            workspaces={workspaces}
+          />
         </div>
         <div className="flex-grow border-2 border-gray-300 m-4 p-4">
-          <p> Hello 2</p>
+          {activeWorkspace ? (
+            <div>{activeWorkspace.name}</div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="text-xl font-semibold mb-4">Tu n'as pas de dossier partagé sélectionné</p>
+              <img
+                className="w-32"
+                src="empty.png"
+                alt="empty"
+                />
+            </div>
+
+          )}
         </div>
       </div>
     </NavigationLayout>
