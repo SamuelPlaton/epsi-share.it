@@ -24,6 +24,7 @@ export class DatasService {
     data.type = createDataDto.type;
     data.content = createDataDto.content;
     data.code = createDataDto.code ? createDataDto.code : null;
+    data.name = createDataDto.name;
     return await this.datasRepository.save(data);
   }
 }

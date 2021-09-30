@@ -26,8 +26,13 @@ export class Data {
   @Column()
   code: string;
 
-  @Column()
+  @Column({
+    type: "text"
+  })
   content: string;
+
+  @Column()
+  name: string;
 
   @CreateDateColumn()
   createdAt: Date;
