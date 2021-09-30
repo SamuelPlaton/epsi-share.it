@@ -5,7 +5,7 @@ import {
     Route,
 } from "react-router-dom";
 
-import {Home, Login, Register, CGU, Menu} from '../pages'
+import {Home, Login, Register, CGU, Menu, Join} from '../pages'
 
 export default function App() {
     return (
@@ -25,6 +25,9 @@ export default function App() {
                 </Route>
                 <Route exact path="/menu">
                     <Menu/>
+                </Route>
+                <Route exact path="/join/:id">
+                     <Join/>
                 </Route>
             </Switch>
         </Router>

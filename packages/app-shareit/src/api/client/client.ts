@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const author = localStorage.getItem('auth');
-
 const client = axios.create({
   baseURL: 'http://localhost:8080/',
   headers: {
@@ -11,5 +10,6 @@ const client = axios.create({
     Authorization: `Bearer ${author}`
   },
 });
+
 
 export default client;
