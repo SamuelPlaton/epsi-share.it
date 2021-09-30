@@ -15,6 +15,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { User } from '../../entities';
 import { JwtService } from '@nestjs/jwt';
 import { sendMail } from '../helpers/mailHandler';
+// @ts-ignore
 import { connexionTemplate } from '../helpers/connexionTemplate';
 
 const bcrypt = require('bcrypt');
