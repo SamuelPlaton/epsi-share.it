@@ -16,7 +16,6 @@ export class DatasService {
   }
 
   async getAll(workspaceId: string, folder: string = null): Promise<Data[]> {
-    console.log('WORKSPACE ID : ', workspaceId);
     const workspace = await this.workspacesRepository.findOne({
       id: workspaceId,
     });
@@ -30,7 +29,6 @@ export class DatasService {
         workspace: workspace,
       },
     });
-    console.log(data);
     return data;
   }
 

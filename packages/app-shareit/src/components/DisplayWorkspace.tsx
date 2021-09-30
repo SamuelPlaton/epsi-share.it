@@ -62,7 +62,6 @@ const DisplayWorkspace: FunctionComponent<Props> = ({workspace}) => {
         };
 
         if(data) {
-            console.log('ON READ LE FILE');
             reader.readAsText(new Blob([data.content]));
         }
     }
