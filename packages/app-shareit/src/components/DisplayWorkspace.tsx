@@ -1,4 +1,4 @@
-import {FunctionComponent, useState} from "react";
+import {FunctionComponent, useEffect, useState} from "react";
 import {Data, Workspace} from "../models";
 import FileUpload from "./FileUpload";
 import {DataStatus} from "../models/Data";
@@ -11,27 +11,32 @@ interface Props {
 const DisplayWorkspace: FunctionComponent<Props> = ({workspace}) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+
     const [datas, setDatas] = useState<Data[]>([]);
-    const data = {
-        id : "id",
-        path : "/path/to/file",
-        user : "string",
-        name: "myFile",
-        type : DataStatus.FILE,
-        parent : "parent",
-    }
 
-    datas.push(data);
+    useEffect(() => {
+        const data = {
+            id : "id",
+            path : "/path/to/file",
+            user : "string",
+            name: "myFile",
+            type : DataStatus.FILE,
+            parent : "parent",
+        }
 
-    const data2 = {
-        id : "id2",
-        path : "/path/to/file2",
-        user : "string",
-        name: "myFile2",
-        type : DataStatus.FILE,
-        parent : "parent",
-    }
-    datas.push(data2);
+
+        const data2 = {
+            id : "id2",
+            path : "/path/to/file2",
+            user : "string",
+            name: "myFile2",
+            type : DataStatus.FILE,
+            parent : "parent",
+        }
+        setDatas([data, data2])
+    }, []);
+
+
 
     return (
         <div>
@@ -41,7 +46,7 @@ const DisplayWorkspace: FunctionComponent<Props> = ({workspace}) => {
             </div>
             <div className="flex flex-row max-w-full flex-wrap px-3">
                 {datas.map((data) =>(
-                    <div className="m-2 p-2 pt-4 shadow p-7 rounded-md  flex flex-col items-center w-36">
+                    <div className="m-2 p-2 pt-4 shadow p-7 rounded-md  flex flex-col items-center w-36" key={data.id}>
                         <img
                             className=""
                             src="file.svg"

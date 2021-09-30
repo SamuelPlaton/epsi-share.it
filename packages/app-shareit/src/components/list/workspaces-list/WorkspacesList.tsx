@@ -16,6 +16,7 @@ const WorkspacesList: FunctionComponent<Props> = ({ activeWorkspace, onClick, wo
             className={`m-2 p-1 border-2 ${activeWorkspace && activeWorkspace.id === workspace.id ? 'border-blue-300' : 'border-gray-300'} rounded-sm flex flex-row items-center min-w-full`}
             onClick={() => onClick(workspace)}
             type="button"
+            key={workspace.id}
           >
             <img
               className="w-8 mr-4"
