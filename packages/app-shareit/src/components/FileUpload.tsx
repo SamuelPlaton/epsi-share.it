@@ -73,7 +73,7 @@ function FileUpload(){
     }
 
     return (
-      <div className="shadow p-7 rounded-md bg-white">
+      <div className="p-7 bg-white">
           <form>
               <div className="grid grid-cols-1 space-y-4">
                   <div>

@@ -35,15 +35,16 @@ const Menu: FunctionComponent = () => {
   return (
     <NavigationLayout title="Menu">
       <div className="flex flex-row min-h-screen">
-        <div className="border-2 border-gray-300 m-4 p-4 w-1/5 flex flex-col items-center">
+        <div className="border-2 border-gray-300 m-4 p-4 min-w-max w-1/5 flex flex-col items-center">
           <CreateWorkspace onSubmit={handleAddWorkspace}/>
+
           <WorkspacesList
             activeWorkspace={activeWorkspace}
             onClick={(workspace) => setActiveWorkspace(workspace)}
             workspaces={workspaces}
           />
         </div>
-        <div className="flex-grow border-2 border-gray-300 m-4 p-4">
+        <div className=" border-2 border-gray-300 m-4 p-4 w-full">
           {activeWorkspace ? (
             <DisplayWorkspace workspace={activeWorkspace}/>
           ) : (
