@@ -20,26 +20,18 @@ const Menu: FunctionComponent = () => {
     setWorkspaces([]);
     const tempWorkspaces = await Api.WorkspacesApi.list();
     if (tempWorkspaces.length > 0) {
-      console.log('GET');
-      console.log(tempWorkspaces);
       setWorkspaces(tempWorkspaces);
     }
   }
 
   useEffect(() => {
-    console.log('Component mounted');
     getWorkspaces();
   }, []);
 
   const [activeWorkspace, setActiveWorkspace] = useState<Workspace|undefined>();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
 
-  useEffect(() => {
-    console.log('Workspaces updated : ', workspaces);
-  }, [workspaces]);
-
   const handleAddWorkspace = (workspace: Workspace) => {
-    console.log('Workspace added');
     setWorkspaces(workspaces.concat(workspace));
     setActiveWorkspace(workspace)
   }

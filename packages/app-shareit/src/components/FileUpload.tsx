@@ -5,6 +5,7 @@ import {Api} from "../api";
 
 interface Props {
     workspace: Workspace;
+    onSubmit: () => void;
 }
 
 function convertWordArrayToUint8Array(wordArray : any) {
@@ -23,7 +24,7 @@ function convertWordArrayToUint8Array(wordArray : any) {
     return uInt8Array;
 }
 
-const FileUpload: FunctionComponent<Props> = ({ workspace }) => {
+const FileUpload: FunctionComponent<Props> = ({ workspace, onSubmit }) => {
     const [fileName, setFileName] = useState("");
     const [blob, setBlob] = useState(new Blob());
 
@@ -38,7 +39,7 @@ const FileUpload: FunctionComponent<Props> = ({ workspace }) => {
         // Encrypt
         const reader = new FileReader();
         reader.onload = async () => {
-            const key = 'oui';
+            const key = 'ee4e5d0c-7a43-4818-b53b-a3166149d819';
             // @ts-ignore
             const wordArray = CryptoJS.lib.WordArray.create(reader.result);
             const encrypted = CryptoJS.AES.encrypt(wordArray, key).toString();
@@ -48,7 +49,8 @@ const FileUpload: FunctionComponent<Props> = ({ workspace }) => {
                 name: file.name,
                 type: "pdf",
                 workspace: workspace
-            })
+            });
+            onSubmit();
         }
         if(file)
             reader.readAsArrayBuffer(file);
@@ -58,7 +60,7 @@ const FileUpload: FunctionComponent<Props> = ({ workspace }) => {
     const decrypt = (aFile: File | undefined) => {
         const reader = new FileReader();
         reader.onload = () => {
-            const key = "oui";
+            const key = "ee4e5d0c-7a43-4818-b53b-a3166149d819";
 
             // @ts-ignore
             const decrypted = CryptoJS.AES.decrypt(reader.result, key);

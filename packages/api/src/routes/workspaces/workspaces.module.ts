@@ -9,5 +9,6 @@ import { UsersModule } from '../users';
   imports: [TypeOrmModule.forFeature([Workspace]), UsersModule],
   controllers: [WorkspacesController],
   providers: [WorkspacesService],
+  exports: [TypeOrmModule],
 })
 export class WorkspacesModule {}
