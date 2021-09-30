@@ -9,7 +9,7 @@ interface Props {
 
 const WorkspacesList: FunctionComponent<Props> = ({ activeWorkspace, onClick, workspaces }) => {
     return (
-      <div className='flex flex-col mt-4'>
+      <div className='flex flex-col mt-4 items-center'>
         <p>Mes workspaces :</p>
         {workspaces.map((workspace) => (
           <button

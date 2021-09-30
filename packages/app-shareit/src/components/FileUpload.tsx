@@ -1,4 +1,3 @@
-import './../styles/FileLoader.css'
 import {useState} from "react";
 import CryptoJS from 'crypto-js';
 
@@ -74,7 +73,7 @@ function FileUpload(){
     }
 
     return (
-      <div className="shadow p-7 rounded-md bg-lime-100 ">
+      <div className="shadow p-7 rounded-md bg-white">
           <form>
               <div className="grid grid-cols-1 space-y-4">
                   <div>
