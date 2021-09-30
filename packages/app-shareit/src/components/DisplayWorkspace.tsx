@@ -51,7 +51,6 @@ const DisplayWorkspace: FunctionComponent<Props> = ({workspace}) => {
     const downloadData = (data: Data) => {
         const reader = new FileReader();
         reader.onload = () => {
-            console.log('ON DECRYPTE');
             const key = "ee4e5d0c-7a43-4818-b53b-a3166149d819";
             // @ts-ignore
             const decrypted = CryptoJS.AES.decrypt(reader.result, key);
