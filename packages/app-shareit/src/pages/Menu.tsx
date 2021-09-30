@@ -5,6 +5,7 @@ import CreateWorkspace from "../components/buttons/CreateWorkspace";
 import {Api} from "../api";
 import WorkspacesList from "../components/list/workspaces-list/WorkspacesList";
 import {Workspace} from "../models";
+import DisplayWorkspace from "../components/DisplayWorkspace";
 
 const Menu: FunctionComponent = () => {
 
@@ -44,7 +45,7 @@ const Menu: FunctionComponent = () => {
         </div>
         <div className="flex-grow border-2 border-gray-300 m-4 p-4">
           {activeWorkspace ? (
-            <div>{activeWorkspace.name}</div>
+            <DisplayWorkspace workspace={activeWorkspace}/>
           ) : (
             <div className="flex flex-col items-center justify-center h-full">
               <p className="text-xl font-semibold mb-4">Tu n'as pas de dossier partagé sélectionné</p>
