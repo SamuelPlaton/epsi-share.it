@@ -1,9 +1,8 @@
 import axios from 'axios';
 
 const author = localStorage.getItem('auth');
-//console.log('a');
 const client = axios.create({
-  baseURL: 'http://localhost:3001/',
+  baseURL: 'http://localhost:8080/',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

@@ -11,20 +11,17 @@ function Join() {
     const isUserActive = localStorage.getItem('auth');
     const history = useHistory();
     if (!isUserActive) {
-        console.log('virés');
         history.replace('/');
     }
-    const test = () => {
-        console.log('HEYYYY');
+    const joinWorkspace = () => {
         Api.WorkspacesApi.join({ id: id }).then(() => {
             history.replace('/menu');
         })
     }
 
     useEffect(() => {
-        test();
+        joinWorkspace();
     }, []);
-
     return <React.Fragment />
 
 }
