@@ -6,6 +6,7 @@ import { CreateWorkspaceDto } from './dto';
 import { JoinWorkspaceDto } from './dto/workspaces.dto';
 import { InviteWorkspaceDto } from './dto/workspaces.dto';
 import { sendMail } from '../helpers/mailHandler';
+// @ts-ignore
 import { invitationTemplate } from '../helpers/invitationTemplate';
 
 @Injectable()

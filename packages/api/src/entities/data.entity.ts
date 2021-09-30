@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {Link, User} from './index';
+import {Link, User, Workspace} from './index';
 
 export enum DataType {
   FILE = 'file',
@@ -21,10 +21,13 @@ export class Data {
   id: string;
 
   @Column()
-  type: DataType;
+  type: string;
 
   @Column()
   code: string;
+
+  @Column()
+  content: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -37,6 +40,9 @@ export class Data {
 
   @ManyToOne(() => User, (user) => user.id)
   user: User;
+
+  @ManyToOne(() => Workspace, (workspace) => workspace.id)
+  workspace: Workspace;
 
   @OneToMany(() => Link, (link) => link.id)
   links: Link[];
