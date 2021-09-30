@@ -4,25 +4,20 @@ import WorkspacesApi from "../../api/workspaces/workspaces-api";
 import {Workspace} from "../../models";
 
 interface Props {
-    onSubmit: (_: Workspace) => void;
     workspace: Workspace;
 }
 
-const InviteWorkspace: FunctionComponent<Props> = ({ onSubmit, workspace }) => {
+const InviteWorkspace: FunctionComponent<Props> = ({ workspace }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [joinUserIdentifier, setJoinUserIdentifier] = useState<string>("");
 
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        const joinedWorkspace = await WorkspacesApi.invite({
+        await WorkspacesApi.invite({
             workspaceId: workspace.id,
             userIdentifier: joinUserIdentifier
         });
-        if (workspace?.id) {
-            onSubmit(workspace);
-            setIsPopupOpen(false);
-        }
-
+        setIsPopupOpen(false);
     }
 
     return (
@@ -40,7 +35,7 @@ const InviteWorkspace: FunctionComponent<Props> = ({ onSubmit, workspace }) => {
                                onChange={(e) => setJoinUserIdentifier(e.target.value)}
                                required/>
                         <div className="form-group mt-4">
-                            <button type="submit"
+                            <button type="button"
                                     className="bg-blue-500 p-2 rounded-md shadow-md text-white"
                                     onClick={handleSubmit}
                             >Valider</button>

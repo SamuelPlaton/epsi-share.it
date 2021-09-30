@@ -1,12 +1,12 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {User, Workspace} from 'src/entities';
-import {Repository} from 'typeorm';
-import {CreateWorkspaceDto} from './dto';
-import {InviteWorkspaceDto, JoinWorkspaceDto} from './dto/workspaces.dto';
-import {sendMail} from '../helpers/mailHandler';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User, Workspace } from 'src/entities';
+import { Repository } from 'typeorm';
+import { CreateWorkspaceDto } from './dto';
+import { InviteWorkspaceDto, JoinWorkspaceDto } from './dto/workspaces.dto';
+import { sendMail } from '../helpers/mailHandler';
 // @ts-ignore
-import {invitationTemplate} from '../helpers/invitationTemplate';
+import { invitationTemplate } from '../helpers/invitationTemplate';
 
 @Injectable()
 export class WorkspacesService {
@@ -15,21 +15,24 @@ export class WorkspacesService {
     private workspacesRepository: Repository<Workspace>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {
-  }
+  ) {}
 
   async find(id: string): Promise<Workspace> {
     return this.workspacesRepository.findOne(id);
   }
 
   async getAll(user: User): Promise<Workspace[]> {
-    const userWorkspaces = (await this.userRepository.find({
-      where: {
-        id: user.id
-      },
-      relations: ['workspaces']
-    }))[0];
-    const workspaces = await this.workspacesRepository.find({user: userWorkspaces});
+    const userWorkspaces = (
+      await this.userRepository.find({
+        where: {
+          id: user.id,
+        },
+        relations: ['workspaces'],
+      })
+    )[0];
+    const workspaces = await this.workspacesRepository.find({
+      user: userWorkspaces,
+    });
     if (userWorkspaces.workspaces.length > 0) {
       // @ts-ignore
       workspaces.push(...userWorkspaces.workspaces);
@@ -96,7 +99,7 @@ export class WorkspacesService {
       throw new NotFoundException('User not found');
     }
     await sendMail(
-      user.email,
+      invitedUser.email,
       'Invitation à un workspace',
       `http://localhost:3000/join/${workspace.id}`,
       invitationTemplate(workspace, user.name),

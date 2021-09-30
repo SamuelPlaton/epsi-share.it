@@ -8,7 +8,6 @@ import WorkspacesList from "../components/list/workspaces-list/WorkspacesList";
 import {Workspace} from "../models";
 import DisplayWorkspace from "../components/DisplayWorkspace";
 import React from "react";
-import FileUpload from "../components/FileUpload";
 
 const Menu: FunctionComponent = () => {
 
@@ -18,30 +17,40 @@ const Menu: FunctionComponent = () => {
     history.replace('/');
   }
   const getWorkspaces = async () => {
+    setWorkspaces([]);
     const tempWorkspaces = await Api.WorkspacesApi.list();
     if (tempWorkspaces.length > 0) {
+      console.log('GET');
+      console.log(tempWorkspaces);
       setWorkspaces(tempWorkspaces);
     }
   }
 
   useEffect(() => {
+    console.log('Component mounted');
     getWorkspaces();
   }, []);
 
   const [activeWorkspace, setActiveWorkspace] = useState<Workspace|undefined>();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
 
+  useEffect(() => {
+    console.log('Workspaces updated : ', workspaces);
+  }, [workspaces]);
+
   const handleAddWorkspace = (workspace: Workspace) => {
+    console.log('Workspace added');
     setWorkspaces(workspaces.concat(workspace));
     setActiveWorkspace(workspace)
   }
+
   return (
     <NavigationLayout title="Menu">
       <div className="flex flex-row min-h-screen">
         <div className="border-2 border-gray-300 m-4 p-4 min-w-max w-1/5 flex flex-col items-center">
           <CreateWorkspace onSubmit={handleAddWorkspace}/>
           <div className="pt-6">
-          {activeWorkspace && <InviteWorkspace workspace={activeWorkspace} onSubmit={handleAddWorkspace}/> }
+          {activeWorkspace && <InviteWorkspace workspace={activeWorkspace} /> }
           </div>
           <WorkspacesList
             activeWorkspace={activeWorkspace}
