@@ -1,9 +1,18 @@
-import {Body, Controller, Get, HttpException, Param, Post, Req, UseGuards} from '@nestjs/common';
-import {WorkspacesService} from './workspaces.service';
-import {Workspace} from 'src/entities';
-import {CreateWorkspaceDto} from './dto';
-import {AuthGuard} from '@nestjs/passport';
-import {InviteWorkspaceDto} from './dto/workspaces.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { WorkspacesService } from './workspaces.service';
+import { Workspace } from 'src/entities';
+import { CreateWorkspaceDto } from './dto';
+import { AuthGuard } from '@nestjs/passport';
+import { InviteWorkspaceDto } from './dto/workspaces.dto';
 
 @Controller('workspaces')
 export class WorkspacesController {
@@ -33,15 +42,19 @@ export class WorkspacesController {
   @Get('join/:id')
   @UseGuards(AuthGuard('jwt'))
   async join(@Param('id') id: string, @Req() req: any): Promise<Workspace> {
-    return await this.workspacesService.join({id: id}, req.user).catch((err) => {
-      throw new HttpException(err.message, err.status);
-    })
+    return await this.workspacesService
+      .join({ id: id }, req.user)
+      .catch((err) => {
+        throw new HttpException(err.message, err.status);
+      });
   }
 
   @Post('/invite')
+  @UseGuards(AuthGuard('jwt'))
   async invite(
     @Body() inviteWorkspaceDto: InviteWorkspaceDto,
+    @Req() req: any,
   ): Promise<boolean> {
-    return await this.workspacesService.invite(inviteWorkspaceDto);
+    return await this.workspacesService.invite(inviteWorkspaceDto, req.user);
   }
 }

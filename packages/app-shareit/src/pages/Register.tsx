@@ -3,6 +3,7 @@ import '../models/User'
 import NavigationLayout from "../components/NavigationLayout";
 import {Api} from "../api";
 import {useHistory} from "react-router-dom";
+import {toast} from "../toast-manager";
 
 const checkPassword = (firstPassword: string, secondPassword: string): string|undefined => {
     if (firstPassword.length === 0) {
@@ -43,6 +44,10 @@ function Register() {
 
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
+        if (!/^\d+$/.test(identifier)) {
+            toast('Votre identifiant doit ne contenir que des chiffres')
+            return false;
+        }
         const errorMessage = checkPassword(password.firstPassword, password.secondPassword);
         setWrongPassword(errorMessage);
         if (!errorMessage) {
@@ -92,7 +97,7 @@ function Register() {
             </div>
             <div className="w-full flex flex-col mt-4 mb-2">
                 <label className="label">Identifiant : </label>
-                <input placeholder="Identifiant" type="number" className="p-1"
+                <input placeholder="Identifiant" className="p-1"
                        onChange={e => setIdentifier(e.target.value)}
                        required/>
             </div>
