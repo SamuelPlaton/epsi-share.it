@@ -48,10 +48,7 @@ const Menu: FunctionComponent = () => {
         </div>
         <div className=" border-2 border-gray-300 m-4 p-4 w-full">
           {activeWorkspace ? (
-            <React.Fragment>
               <DisplayWorkspace workspace={activeWorkspace}/>
-              <FileUpload workspace={activeWorkspace} />
-            </React.Fragment>
           ) : (
             <div className="flex flex-col items-center justify-center h-full">
               <p className="text-xl font-semibold mb-4">Tu n'as pas de dossier partagé sélectionné</p>
