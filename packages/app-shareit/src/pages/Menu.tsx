@@ -2,6 +2,7 @@ import {FunctionComponent, useEffect, useState} from "react";
 import { useHistory } from "react-router-dom";
 import NavigationLayout from "../components/NavigationLayout";
 import CreateWorkspace from "../components/buttons/CreateWorkspace";
+import InviteWorkspace from "../components/buttons/InviteWorkspace";
 import {Api} from "../api";
 import WorkspacesList from "../components/list/workspaces-list/WorkspacesList";
 import {Workspace} from "../models";
@@ -39,7 +40,9 @@ const Menu: FunctionComponent = () => {
       <div className="flex flex-row min-h-screen">
         <div className="border-2 border-gray-300 m-4 p-4 min-w-max w-1/5 flex flex-col items-center">
           <CreateWorkspace onSubmit={handleAddWorkspace}/>
-
+          <div className="pt-6">
+          {activeWorkspace && <InviteWorkspace workspace={activeWorkspace} onSubmit={handleAddWorkspace}/> }
+          </div>
           <WorkspacesList
             activeWorkspace={activeWorkspace}
             onClick={(workspace) => setActiveWorkspace(workspace)}
