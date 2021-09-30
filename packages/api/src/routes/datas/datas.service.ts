@@ -6,8 +6,9 @@ import {CreateDataDto} from "./dto";
 
 @Injectable()
 export class DatasService {
-  constructor(@InjectRepository(Data) private datasRepository: Repository<Data>) {
-  }
+  constructor(
+    @InjectRepository(Data) private datasRepository: Repository<Data>,
+  ) {}
 
   async find(id: string): Promise<Data> {
     return this.datasRepository.findOne(id);
@@ -28,7 +29,7 @@ export class DatasService {
     data.workspace = createDataDto.workspace;
     data.type = createDataDto.type;
     data.content = createDataDto.content;
-    data.code = createDataDto.code ? createDataDto.code : null;
+    data.code = 'salut';
     data.name = createDataDto.name;
     if (createDataDto.parentId) {
       const parent = await this.datasRepository.findOne({id: createDataDto.parentId});

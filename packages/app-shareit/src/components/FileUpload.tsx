@@ -1,6 +1,11 @@
-import './../styles/FileLoader.css'
-import {useState} from "react";
+import {FunctionComponent, useState} from "react";
 import CryptoJS from 'crypto-js';
+import {Workspace} from "../models";
+import {Api} from "../api";
+
+interface Props {
+    workspace: Workspace;
+}
 
 function convertWordArrayToUint8Array(wordArray : any) {
     const arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
@@ -18,10 +23,7 @@ function convertWordArrayToUint8Array(wordArray : any) {
     return uInt8Array;
 }
 
-
-
-
-function FileUpload(){
+const FileUpload: FunctionComponent<Props> = ({ workspace }) => {
     const [fileName, setFileName] = useState("");
     const [blob, setBlob] = useState(new Blob());
 
@@ -35,12 +37,18 @@ function FileUpload(){
     const encryptFile = (file: File) => {
         // Encrypt
         const reader = new FileReader();
-        reader.onload = () => {
+        reader.onload = async () => {
             const key = 'oui';
             // @ts-ignore
             const wordArray = CryptoJS.lib.WordArray.create(reader.result);
             const encrypted = CryptoJS.AES.encrypt(wordArray, key).toString();
             const blob = new Blob([encrypted]);
+            await Api.DatasApi.create({
+                content: encrypted,
+                name: file.name,
+                type: "pdf",
+                workspace: workspace
+            })
         }
         if(file)
             reader.readAsArrayBuffer(file);
@@ -74,11 +82,11 @@ function FileUpload(){
     }
 
     return (
-      <div className="shadow p-7 rounded-md bg-lime-100 ">
+      <div className="p-7 bg-white">
           <form>
               <div className="grid grid-cols-1 space-y-4">
                   <div>
-                      <p>Select a file</p>
+                      <p>Entrez un fichier</p>
                   </div>
                   <div className="">
                       <input type="file"

@@ -24,9 +24,7 @@ export class Data {
   @Column()
   type: string;
 
-  @Column({
-    nullable: true
-  })
+  @Column()
   code: string;
 
   @Column({

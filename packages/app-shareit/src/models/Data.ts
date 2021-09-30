@@ -2,6 +2,7 @@ export interface Data{
     id : string;
     path : string;
     user : string;
+    name: string;
     type : DataStatus;
     parent : string;
     workspace? : string;
