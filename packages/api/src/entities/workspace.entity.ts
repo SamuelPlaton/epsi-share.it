@@ -6,10 +6,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 import {User} from './user.entity';
+import {Data} from './data.entity';
 
 @Entity()
 export class Workspace {
@@ -33,6 +35,9 @@ export class Workspace {
 
   @ManyToOne(() => User, (user) => user.id)
   user: User;
+
+  @OneToMany(() => Data, (data) => data.workspace)
+  datas: Data[];
 
   @ManyToMany(() => User, (user) => user.workspaces)
   @JoinTable()
