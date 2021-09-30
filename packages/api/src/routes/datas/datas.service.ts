@@ -13,13 +13,8 @@ export class DatasService {
     return this.datasRepository.findOne(id);
   }
 
-  async getAll(workspaceId: string, folder: string = null): Promise<Data[]> {
-    return this.datasRepository.find({
-      where: {
-        workspace: workspaceId,
-        parent: folder
-      }
-    });
+  async getAll(user: User): Promise<Data[]> {
+    return this.datasRepository.find({where: {user: user}});
   }
 
   async create(createDataDto: CreateDataDto, user: User): Promise<Data> {
@@ -30,12 +25,6 @@ export class DatasService {
     data.content = createDataDto.content;
     data.code = createDataDto.code ? createDataDto.code : null;
     data.name = createDataDto.name;
-    if (createDataDto.parent) {
-      if (createDataDto.parent.type !== 'folder') {
-        throw new Error('Parent must be a folder')
-      }
-      data.parent = createDataDto.parent ? createDataDto.parent : null;
-    }
     return await this.datasRepository.save(data);
   }
 }
