@@ -43,7 +43,8 @@ const DisplayWorkspace: FunctionComponent<Props> = ({workspace}) => {
         getDatas();
     }, [workspace]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (data: Data) => {
+        setDatas(datas.concat(data));
         toast('Succès', 'Fichier envoyé', 'green');
         setIsPopupOpen(false);
     }

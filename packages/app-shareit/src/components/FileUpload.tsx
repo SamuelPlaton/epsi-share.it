@@ -1,11 +1,11 @@
 import {FunctionComponent, useState} from "react";
 import CryptoJS from 'crypto-js';
-import {Workspace} from "../models";
+import {Data, Workspace} from "../models";
 import {Api} from "../api";
 
 interface Props {
     workspace: Workspace;
-    onSubmit: () => void;
+    onSubmit: (_: Data) => void;
 }
 
 function convertWordArrayToUint8Array(wordArray : any) {
@@ -44,13 +44,13 @@ const FileUpload: FunctionComponent<Props> = ({ workspace, onSubmit }) => {
             const wordArray = CryptoJS.lib.WordArray.create(reader.result);
             const encrypted = CryptoJS.AES.encrypt(wordArray, key).toString();
             const blob = new Blob([encrypted]);
-            await Api.DatasApi.create({
+            const data = await Api.DatasApi.create({
                 content: encrypted,
                 name: file.name,
                 type: "pdf",
                 workspace: workspace
             });
-            onSubmit();
+            onSubmit(data);
         }
         if(file)
             reader.readAsArrayBuffer(file);

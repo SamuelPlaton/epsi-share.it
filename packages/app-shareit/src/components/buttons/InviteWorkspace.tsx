@@ -13,11 +13,14 @@ const InviteWorkspace: FunctionComponent<Props> = ({ workspace }) => {
 
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        await WorkspacesApi.invite({
+        const result = await WorkspacesApi.invite({
             workspaceId: workspace.id,
             userIdentifier: joinUserIdentifier
         });
-        setIsPopupOpen(false);
+        if (result) {
+            setIsPopupOpen(false);
+        }
+
     }
 
     return (
