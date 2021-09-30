@@ -1,4 +1,4 @@
-import {Data, Workspace} from '../../../entities';
+import {Workspace} from '../../../entities';
 
 export class CreateDataDto {
   name: string;
@@ -6,5 +6,5 @@ export class CreateDataDto {
   content: string;
   workspace: Workspace;
   code?: string;
-  parent?: Data;
+  parentId?: string;
 }

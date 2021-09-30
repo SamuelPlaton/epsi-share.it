@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Data, User} from 'src/entities';
 import {Repository} from 'typeorm';
@@ -17,7 +17,7 @@ export class DatasService {
     return this.datasRepository.find({
       where: {
         workspace: workspaceId,
-        parent: folder
+        parentId: folder
       }
     });
   }
@@ -30,11 +30,15 @@ export class DatasService {
     data.content = createDataDto.content;
     data.code = createDataDto.code ? createDataDto.code : null;
     data.name = createDataDto.name;
-    if (createDataDto.parent) {
-      if (createDataDto.parent.type !== 'folder') {
+    if (createDataDto.parentId) {
+      const parent = await this.datasRepository.findOne({id: createDataDto.parentId});
+      if (!parent) {
+        throw new NotFoundException();
+      }
+      if (parent && parent.type !== 'folder') {
         throw new Error('Parent must be a folder')
       }
-      data.parent = createDataDto.parent ? createDataDto.parent : null;
+      data.parentId = createDataDto.parentId ? createDataDto.parentId : null;
     }
     return await this.datasRepository.save(data);
   }
