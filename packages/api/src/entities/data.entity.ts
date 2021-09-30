@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -48,6 +49,13 @@ export class Data {
 
   @ManyToOne(() => Workspace, (workspace) => workspace.id)
   workspace: Workspace;
+
+  @Column({nullable: true})
+  parentId: string;
+
+  @ManyToOne(() => Data, data => data.id)
+  @JoinColumn({name: "parentId"})
+  parent: Data;
 
   @OneToMany(() => Link, (link) => link.id)
   links: Link[];
