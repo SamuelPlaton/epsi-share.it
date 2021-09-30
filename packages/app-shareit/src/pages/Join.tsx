@@ -17,8 +17,8 @@ function Join() {
     const test = () => {
         console.log('HEYYYY');
         Api.WorkspacesApi.join({ id: id }).then(() => {
-            history.replace('/menu')}
-        )
+            history.replace('/menu');
+        })
     }
 
     useEffect(() => {
