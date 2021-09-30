@@ -15,7 +15,7 @@ export interface WorkspaceInvite {
 }
 
 const WorkspacesApi = {
-  get: (id: string) => client.get(`/workspaces/get/${id}`).then(response => {
+  get: (id: string) => client.get(`/workspaces/${id}`).then(response => {
     return response.data;
   }).catch(err => toast(err.response.data.message, err.response.data.error)),
 
@@ -23,7 +23,7 @@ const WorkspacesApi = {
     return response.data;
   }).catch(err => err),
 
-  create: (workspaceCreation: WorkspaceCreation) => client.post('/workspaces', { ...workspaceCreation }).then((response) => {
+  create: (workspaceCreation: WorkspaceCreation) => client.post('/workspaces', { ...workspaceCreation }, { headers: { Authorization: `Bearer ${localStorage.getItem('auth')}`}}).then((response) => {
     return response.data;
   }).catch(err => toast(err.response.data.message, err.response.data.error)),
 

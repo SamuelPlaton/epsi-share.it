@@ -1,5 +1,6 @@
 export interface Data{
     id : string;
+    content: string;
     path : string;
     user : string;
     name: string;

@@ -1,6 +1,6 @@
 const Toastify = require('toastify-js');
 
-const toast = (title: string, message?: string) => {
+const toast = (title: string, message?: string, bgColor = 'red') => {
   Toastify({
     text: `${title} ${message ? `: ${message}` : ''}`,
     duration: 3000,
@@ -9,7 +9,7 @@ const toast = (title: string, message?: string) => {
     gravity: "top", // `top` or `bottom`
     position: "right", // `left`, `center` or `right`
     stopOnFocus: true, // Prevents dismissing of toast on hover
-    backgroundColor: 'red'
+    backgroundColor: bgColor
   }).showToast();
 };
 

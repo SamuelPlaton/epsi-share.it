@@ -1,13 +1,14 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Data, User} from 'src/entities';
-import {Repository} from 'typeorm';
-import {CreateDataDto} from "./dto";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import {Data, User, Workspace} from 'src/entities';
+import { Repository } from 'typeorm';
+import { CreateDataDto } from './dto';
 
 @Injectable()
 export class DatasService {
   constructor(
     @InjectRepository(Data) private datasRepository: Repository<Data>,
+    @InjectRepository(Workspace) private workspacesRepository: Repository<Workspace>,
   ) {}
 
   async find(id: string): Promise<Data> {
@@ -15,12 +16,20 @@ export class DatasService {
   }
 
   async getAll(workspaceId: string, folder: string = null): Promise<Data[]> {
-    return this.datasRepository.find({
-      where: {
-        workspace: workspaceId,
-        parentId: folder
-      }
+    const workspace = await this.workspacesRepository.findOne({
+      id: workspaceId,
     });
+
+    if (!workspace) {
+      throw new NotFoundException('Workspace not found');
+    }
+
+    const data = await this.datasRepository.find({
+      where: {
+        workspace: workspace,
+      },
+    });
+    return data;
   }
 
   async create(createDataDto: CreateDataDto, user: User): Promise<Data> {
@@ -32,12 +41,14 @@ export class DatasService {
     data.code = 'salut';
     data.name = createDataDto.name;
     if (createDataDto.parentId) {
-      const parent = await this.datasRepository.findOne({id: createDataDto.parentId});
+      const parent = await this.datasRepository.findOne({
+        id: createDataDto.parentId,
+      });
       if (!parent) {
         throw new NotFoundException();
       }
       if (parent && parent.type !== 'folder') {
-        throw new Error('Parent must be a folder')
+        throw new Error('Parent must be a folder');
       }
       data.parentId = createDataDto.parentId ? createDataDto.parentId : null;
     }
