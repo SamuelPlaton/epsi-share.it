@@ -142,7 +142,7 @@ export const connexionTemplate = (identifier: string, securityCode: string) => {
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
 
   <div style="line-height: 140%; text-align: left; word-wrap: break-word;">
-  <p style="font-size: 14px; line-height: 140%;">Voici vos identifiants de connexion : 0000</p>
+  <p style="font-size: 14px; line-height: 140%;">Voici vos identifiants de connexion : ${securityCode}</p>
   </div>
 
   </td>

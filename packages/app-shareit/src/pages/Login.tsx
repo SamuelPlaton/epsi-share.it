@@ -4,16 +4,18 @@ import IdentifierInput from "../components/inputs/identifier-input/IdentifierInp
 import {Api} from "../api";
 
 import { default as Popup } from '../components/Popup';
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 function Login() {
+    const location = useLocation();
+    const history = useHistory();
+
     const [identifier, setIdentifier] = useState<Array<number>>([]);
     const [password, setPassword] = useState<string>("");
     const [securityCode, setSecurityCode] = useState<string>("");
     const [isPopupOpened, setPopupOpened] = useState<boolean>(false);
 
     const isUserActive = localStorage.getItem('auth');
-    const history = useHistory();
     if (isUserActive) {
         history.replace('/menu')
     }
@@ -30,12 +32,12 @@ function Login() {
         }
     }
 
-    const confirmConnexion = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
+    const confirmConnexion = async (paramIdentifier: string, paramSecurityCode: string, event?: { preventDefault: () => void; }) => {
+        event?.preventDefault();
         const stringedIdentifier = identifier.join('');
         const result = await Api.UsersApi.confirmConnexion({
-            identifier: stringedIdentifier,
-            securityCode: securityCode,
+            identifier: paramIdentifier,
+            securityCode: paramSecurityCode,
         });
 
         if (result?.auth) {
@@ -44,6 +46,12 @@ function Login() {
             history.replace('/menu');
         }
     };
+
+    const urlIdentifier = new URLSearchParams(location.search).get("identifier");
+    const urlSecurityCode = new URLSearchParams(location.search).get("securityCode");
+    if (urlIdentifier && urlSecurityCode) {
+        confirmConnexion(urlIdentifier, urlSecurityCode);
+    }
 
     return (
       <NavigationLayout title="Connexion">
@@ -76,7 +84,7 @@ function Login() {
             <Popup onClose={() => setPopupOpened(false)}>
                 <div className='p-2'>
                     <form
-                      onSubmit={confirmConnexion}
+                      onSubmit={(e) => confirmConnexion(identifier.join(''), securityCode, e)}
                       className="flex flex-col items-center mx-auto"
                     >
                     <p className="my-2">Entrez votre code reçu par mail :</p>
