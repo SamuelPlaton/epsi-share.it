@@ -34,7 +34,7 @@ const UsersApi = {
 
   confirmConnexion: (userConfirmConnexion: UserConfirmConnexion) => client.post('/users/confirm', { ...userConfirmConnexion }).then((response) => {
     return response.data;
-  }).catch((err) => toast(err.response.data.message, err.response.data.error)),
+  }).catch((err) => console.log(err)),
 
   create: (userCreation: UserCreation) => client.post('/users', { ...userCreation }).then((response) => {
     return response.data;
