@@ -39,7 +39,7 @@ export class WorkspacesController {
     return await this.workspacesService.create(createWorkspaceDto, req.user);
   }
 
-  @Get('join/:id')
+  @Get('/join/:id')
   @UseGuards(AuthGuard('jwt'))
   async join(@Param('id') id: string, @Req() req: any): Promise<Workspace> {
     return await this.workspacesService

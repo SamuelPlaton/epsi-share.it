@@ -6,6 +6,8 @@ import {Api} from "../api";
 import WorkspacesList from "../components/list/workspaces-list/WorkspacesList";
 import {Workspace} from "../models";
 import DisplayWorkspace from "../components/DisplayWorkspace";
+import React from "react";
+import FileUpload from "../components/FileUpload";
 
 const Menu: FunctionComponent = () => {
 
@@ -46,7 +48,10 @@ const Menu: FunctionComponent = () => {
         </div>
         <div className=" border-2 border-gray-300 m-4 p-4 w-full">
           {activeWorkspace ? (
-            <DisplayWorkspace workspace={activeWorkspace}/>
+            <React.Fragment>
+              <DisplayWorkspace workspace={activeWorkspace}/>
+              <FileUpload workspace={activeWorkspace} />
+            </React.Fragment>
           ) : (
             <div className="flex flex-col items-center justify-center h-full">
               <p className="text-xl font-semibold mb-4">Tu n'as pas de dossier partagé sélectionné</p>
@@ -56,7 +61,6 @@ const Menu: FunctionComponent = () => {
                 alt="empty"
                 />
             </div>
-
           )}
         </div>
       </div>
