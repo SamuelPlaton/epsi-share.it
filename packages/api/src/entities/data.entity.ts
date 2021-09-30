@@ -23,7 +23,9 @@ export class Data {
   @Column()
   type: string;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   code: string;
 
   @Column({
@@ -48,6 +50,12 @@ export class Data {
 
   @ManyToOne(() => Workspace, (workspace) => workspace.id)
   workspace: Workspace;
+
+  @ManyToOne(() => Data, (data) => data.id)
+  @Column({
+    nullable: true
+  })
+  parent: Data;
 
   @OneToMany(() => Link, (link) => link.id)
   links: Link[];
