@@ -5,7 +5,7 @@ import {DataStatus} from "../models/Data";
 import Popup from "./Popup";
 
 interface Props {
-    workspace?: Workspace,
+    workspace: Workspace,
 }
 
 const DisplayWorkspace: FunctionComponent<Props> = ({workspace}) => {
@@ -56,7 +56,7 @@ const DisplayWorkspace: FunctionComponent<Props> = ({workspace}) => {
             </div>
             {isPopupOpen &&
                 <Popup onClose={() => setIsPopupOpen(false)}>
-                    <FileUpload/>
+                    <FileUpload workspace={workspace}/>
                 </Popup>
             }
         </div>

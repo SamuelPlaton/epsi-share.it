@@ -1,20 +1,21 @@
-import {Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Data, User} from 'src/entities';
-import {Repository} from 'typeorm';
-import {CreateDataDto} from "./dto";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Data, User } from 'src/entities';
+import { Repository } from 'typeorm';
+import { CreateDataDto } from './dto';
 
 @Injectable()
 export class DatasService {
-  constructor(@InjectRepository(Data) private datasRepository: Repository<Data>) {
-  }
+  constructor(
+    @InjectRepository(Data) private datasRepository: Repository<Data>,
+  ) {}
 
   async find(id: string): Promise<Data> {
     return this.datasRepository.findOne(id);
   }
 
   async getAll(user: User): Promise<Data[]> {
-    return this.datasRepository.find({where: {user: user}});
+    return this.datasRepository.find({ where: { user: user } });
   }
 
   async create(createDataDto: CreateDataDto, user: User): Promise<Data> {
@@ -23,7 +24,7 @@ export class DatasService {
     data.workspace = createDataDto.workspace;
     data.type = createDataDto.type;
     data.content = createDataDto.content;
-    data.code = createDataDto.code ? createDataDto.code : null;
+    data.code = 'salut';
     data.name = createDataDto.name;
     return await this.datasRepository.save(data);
   }

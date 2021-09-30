@@ -14,7 +14,7 @@ const WorkspacesApi = {
     return response.data;
   }).catch(err => toast(err.response.data.message, err.response.data.error)),
 
-  list: () => client.get('/workspaces').then(response => {
+  list: () => client.get('/workspaces', { headers: { Authorization: `Bearer ${localStorage.getItem('auth')}`}}).then(response => {
     return response.data;
   }).catch(err => err),
 
